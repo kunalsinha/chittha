@@ -37,7 +37,7 @@ class Engine:
     @staticmethod
     def createNote():
         note = Note()
-        note.show()
+        note.showNote()
         note.activateWindow()
         Engine.notes.append(note)
 
