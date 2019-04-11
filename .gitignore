@@ -1,0 +1,22 @@
+#Exclude files with these extensions
+*.pyc
+*.swp
+*.swo
+*.swn
+*.rstudio
+*.log
+
+#Ignore auto generated backup files
+*~
+
+#Ignore any __pycache__ directory
+__pycache__/
+
+#Ignore virtual environment directory
+venv/
+
+#Ignore static folder in the root directory
+/static/
+
+# Don't include settings
+settings.yaml
