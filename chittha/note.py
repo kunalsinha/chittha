@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPoint
 
 class Note(QWidget):
 
@@ -14,3 +14,15 @@ class Note(QWidget):
         self.setMinimumHeight(self.MIN_HEIGHT)
         self.resize(self.INITIAL_WIDTH, self.INITIAL_HEIGHT)
         self.setWindowFlags(Qt.Tool)
+        self.currentPosition = None
+
+    def hideNote(self):
+        self.currentPosition = self.pos()
+        self.hide()
+
+    def showNote(self):
+        self.hide()
+        if self.currentPosition:
+            self.move(self.currentPosition)
+        self.show()
+        self.activateWindow()

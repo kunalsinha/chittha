@@ -1,5 +1,6 @@
+from PyQt5.QtCore import QPoint
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QSystemTrayIcon, QMenu
+from PyQt5.QtWidgets import *
 
 from chittha.note import Note
 import sys
@@ -55,19 +56,16 @@ class TrayMenu(QMenu):
 
     def createNewNote(self):
         note = Note()
-        note.show()
-        note.activateWindow()
+        note.showNote()
         Engine.notes.append(note)
     
     def hideAllNotes(self):
         for note in Engine.notes:
-            note.hide()
+            note.hideNote()
 
     def showAllNotes(self):
         for note in Engine.notes:
-            note.hide()
-            note.show()
-            note.activateWindow()
+            note.showNote()
 
     def quit(self):
         sys.exit(0)
