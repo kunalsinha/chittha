@@ -56,8 +56,9 @@ class NoteMenu(QWidget):
         super().__init__(parent)
         # create a horizontal layout for the top menu
         self.layout = QHBoxLayout(self)
-        self.new = self.buttonFactory('resources/new.svg', 'new', self.createNewNote)
+        self.new = self.buttonFactory('resources/new.svg', None, self.createNewNote)
         self.layout.addWidget(self.new)
+        self.layout.addStretch(1)
 
     def buttonFactory(self, icon, text, handler):
         button = QPushButton(QIcon(icon), text, self)
@@ -66,6 +67,23 @@ class NoteMenu(QWidget):
 
     def createNewNote(self):
         NoteManager.addNewNote()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.isLeftMouseButtonPressed = True
+            self.startPosition = self.mapToGlobal(event.pos())
+
+    def mouseMoveEvent(self, event):
+        if self.isLeftMouseButtonPressed:
+            self.endPosition = self.mapToGlobal(event.pos())
+            self.delta = self.endPosition - self.startPosition
+            self.newPosition = self.mapToGlobal(self.delta)
+            self.parent().setGeometry(self.newPosition.x(), self.newPosition.y(), self.parentWidget().width(), self.parentWidget().height())
+            self.startPosition = self.endPosition
+
+    def mouseReleaseEvent(self, event):
+        if event.button == Qt.LeftButton and self.isLeftMouseButtonPressed:
+            self.isLeftMouseButtonPressed = False
 
 class NoteEditor(QTextEdit):
 
