@@ -19,7 +19,7 @@ class Note(QWidget):
         self.setMinimumHeight(self.MIN_HEIGHT)
         self.resize(self.INITIAL_WIDTH, self.INITIAL_HEIGHT)
         # make the note widgets skip taskbar
-        self.setWindowFlags(Qt.Tool)
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
         self.currentPosition = None
         # create a topmost vertical layout
         self.layout = QVBoxLayout(self)
@@ -56,9 +56,15 @@ class NoteMenu(QWidget):
         super().__init__(parent)
         # create a horizontal layout for the top menu
         self.layout = QHBoxLayout(self)
+        self.layout.setContentsMargins(10, 5, 5, 2)
+        # add a new note button
         self.new = self.buttonFactory('resources/new.svg', None, self.createNewNote)
         self.layout.addWidget(self.new)
+        # add empty space
         self.layout.addStretch(1)
+        # add a delete note button
+        self.delete = self.buttonFactory('resources/delete.svg', None, self.deleteNote)
+        self.layout.addWidget(self.delete)
 
     def buttonFactory(self, icon, text, handler):
         button = QPushButton(QIcon(icon), text, self)
@@ -67,6 +73,9 @@ class NoteMenu(QWidget):
 
     def createNewNote(self):
         NoteManager.addNewNote()
+
+    def deleteNote(self):
+        NoteManager.deleteNote(self.parentWidget())
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -105,4 +114,10 @@ class NoteManager:
         note.showNote()
         note.activateWindow()
         NoteManager.notes.append(note)
+
+    @staticmethod
+    def deleteNote(note):
+        if note in NoteManager.notes:
+            NoteManager.notes.remove(note)
+            note.destroy()
 
