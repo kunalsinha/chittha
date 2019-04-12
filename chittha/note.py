@@ -115,8 +115,9 @@ class NoteMenu(QWidget):
             self.endPosition = self.mapToGlobal(event.pos())
             self.delta = self.endPosition - self.startPosition
             self.newPosition = self.mapToGlobal(self.delta)
-            self.parent().setGeometry(self.newPosition.x(), self.newPosition.y(), self.parentWidget().width(), self.parentWidget().height())
+            self.parentWidget().setGeometry(self.newPosition.x(), self.newPosition.y(), self.parentWidget().width(), self.parentWidget().height())
             self.startPosition = self.endPosition
+            self.parentWidget().currentPosition = self.newPosition
 
     def mouseReleaseEvent(self, event):
         if event.button == Qt.LeftButton and self.isLeftMouseButtonPressed:
@@ -135,6 +136,7 @@ class NoteStatus(QStatusBar):
 class NoteManager:
 
     notes = []
+    ALWAYS_ON_TOP = False
 
     @staticmethod
     def addNewNote():
@@ -164,10 +166,12 @@ class NoteManager:
     @staticmethod
     def toggleAlwaysOnTop(alwaysOnTop):
         if alwaysOnTop:
+            NoteManager.ALWAYS_ON_TOP = True
             Note.flags = Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint
             if len(NoteManager.notes) > 0:
                 NoteManager.cloneNote(NoteManager.notes[0])
         else:
+            NoteManager.ALWAYS_ON_TOP = False
             Note.flags = Qt.FramelessWindowHint | Qt.Tool
             for note in NoteManager.notes:
                 note.setWindowFlags(Note.flags)

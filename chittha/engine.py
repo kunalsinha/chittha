@@ -39,8 +39,8 @@ class TrayMenu(QMenu):
         super().__init__()
         self.addItem('New Note', False, self.createNewNote)
         self.addSeparator()
-        self.addItem('Show All', False, self.showAllNotes)
-        self.addItem('Hide All', False, self.hideAllNotes)
+        self.showAll = self.addItem('Show All', False, self.showAllNotes)
+        self.hideAll = self.addItem('Hide All', False, self.hideAllNotes)
         self.addSeparator()
         self.alwaysOnTop = self.addItem('Always On Top', True, self.toggleAlwaysOnTop)
         self.addSeparator()
@@ -56,16 +56,25 @@ class TrayMenu(QMenu):
         NoteManager.addNewNote()
     
     def hideAllNotes(self):
-        for note in NoteManager.notes:
-            note.hideNote()
+        if not NoteManager.ALWAYS_ON_TOP:
+            for note in NoteManager.notes:
+                note.hideNote()
 
     def showAllNotes(self):
-        for note in NoteManager.notes:
-            note.showNote()
+        if not NoteManager.ALWAYS_ON_TOP:
+            for note in NoteManager.notes:
+                note.showNote()
 
     def quit(self):
         sys.exit(0)
 
     def toggleAlwaysOnTop(self):
-        NoteManager.toggleAlwaysOnTop(self.alwaysOnTop.isChecked())
+        isAlwaysOnTop = self.alwaysOnTop.isChecked()
+        if isAlwaysOnTop:
+            self.showAll.setDisabled(True)
+            self.hideAll.setDisabled(True)
+        else:
+            self.showAll.setDisabled(False)
+            self.hideAll.setDisabled(False)
+        NoteManager.toggleAlwaysOnTop(isAlwaysOnTop)
 
