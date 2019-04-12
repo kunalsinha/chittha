@@ -50,6 +50,23 @@ class Note(QWidget):
         self.activateWindow()
         self.isHidden = False
 
+    def deleteNote(self):
+        confirmation = self.askUserConfirmation()
+        if confirmation:
+            NoteManager.deleteNote(self)
+            self.destroy()
+
+    def askUserConfirmation(self):
+        msgBox = QMessageBox(self)
+        msgBox.setText('Delete this note?')
+        msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msgBox.setDefaultButton(QMessageBox.No)
+        ret = msgBox.exec_()
+        if ret == QMessageBox.Yes:
+            return True
+        else:
+            return False
+
 class NoteMenu(QWidget):
 
     def __init__(self, parent):
@@ -75,7 +92,7 @@ class NoteMenu(QWidget):
         NoteManager.addNewNote()
 
     def deleteNote(self):
-        NoteManager.deleteNote(self.parentWidget())
+        self.parentWidget().deleteNote()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -119,5 +136,6 @@ class NoteManager:
     def deleteNote(note):
         if note in NoteManager.notes:
             NoteManager.notes.remove(note)
-            note.destroy()
+
+
 
