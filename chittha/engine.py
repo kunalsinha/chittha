@@ -2,20 +2,19 @@ from PyQt5.QtCore import QPoint
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 
-from chittha.note import Note
+from chittha.note import Note, NoteManager
 import sys
 
 class Engine:
 
     app = None
-    notes = []
     TRAY_ICON = 'resources/tray-icon.svg'
 
     @staticmethod
     def start():
         Engine.app = QApplication([])
         Engine.createSystemTray()
-        Engine.createNote()
+        NoteManager.addNewNote()
         Engine.app.exec_()
 
     @staticmethod
@@ -34,13 +33,6 @@ class Engine:
             # show the tray
             tray.show()
 
-    @staticmethod
-    def createNote():
-        note = Note()
-        note.showNote()
-        note.activateWindow()
-        Engine.notes.append(note)
-
 class TrayMenu(QMenu):
 
     def __init__(self):
@@ -55,16 +47,14 @@ class TrayMenu(QMenu):
         action.triggered.connect(handler)
 
     def createNewNote(self):
-        note = Note()
-        note.showNote()
-        Engine.notes.append(note)
+        NoteManager.addNewNote()
     
     def hideAllNotes(self):
-        for note in Engine.notes:
+        for note in NoteManager.notes:
             note.hideNote()
 
     def showAllNotes(self):
-        for note in Engine.notes:
+        for note in NoteManager.notes:
             note.showNote()
 
     def quit(self):

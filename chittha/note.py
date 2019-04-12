@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTextEdit, QStatusBar
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, QPoint
 
 import logging
@@ -20,11 +21,17 @@ class Note(QWidget):
         # make the note widgets skip taskbar
         self.setWindowFlags(Qt.Tool)
         self.currentPosition = None
-        # add a topmost vertical layout to the note
+        # create a topmost vertical layout
         self.layout = QVBoxLayout(self)
-        self.layout.addWidget(NoteMenu(self))
-        self.layout.addWidget(NoteEditor(self))
-        self.layout.addWidget(NoteStatus(self))
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        # add widgets to the layout
+        self.menu = NoteMenu(self)
+        self.layout.addWidget(self.menu)
+        self.editor = NoteEditor(self)
+        self.layout.addWidget(self.editor)
+        self.statusBar = NoteStatus(self)
+        self.layout.addWidget(self.statusBar)
+        # add the layout to the note widget
         self.setLayout(self.layout)
 
     def hideNote(self):
@@ -47,6 +54,18 @@ class NoteMenu(QWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
+        # create a horizontal layout for the top menu
+        self.layout = QHBoxLayout(self)
+        self.new = self.buttonFactory('resources/new.svg', 'new', self.createNewNote)
+        self.layout.addWidget(self.new)
+
+    def buttonFactory(self, icon, text, handler):
+        button = QPushButton(QIcon(icon), text, self)
+        button.clicked.connect(handler)
+        return button
+
+    def createNewNote(self):
+        NoteManager.addNewNote()
 
 class NoteEditor(QTextEdit):
 
@@ -57,4 +76,15 @@ class NoteStatus(QStatusBar):
 
     def __init__(self, parent):
         super().__init__(parent)
+
+class NoteManager:
+
+    notes = []
+
+    @staticmethod
+    def addNewNote():
+        note = Note()
+        note.showNote()
+        note.activateWindow()
+        NoteManager.notes.append(note)
 
