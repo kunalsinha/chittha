@@ -12,6 +12,7 @@ class Note(QWidget):
     MIN_HEIGHT = 120
     INITIAL_WIDTH = 280
     INITIAL_HEIGHT = 240
+    flags = Qt.FramelessWindowHint | Qt.Tool
 
     def __init__(self):
         super().__init__()
@@ -19,11 +20,9 @@ class Note(QWidget):
         self.setMinimumHeight(self.MIN_HEIGHT)
         self.resize(self.INITIAL_WIDTH, self.INITIAL_HEIGHT)
         # make the note widgets skip taskbar
-        self.flags = Qt.FramelessWindowHint | Qt.Tool
-        self.setWindowFlags(self.flags)
+        self.setWindowFlags(Note.flags)
         # initialize needed properties
         self.currentPosition = None
-        self.isAlwaysOnTop = False
         # create a topmost vertical layout
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
@@ -73,12 +72,6 @@ class Note(QWidget):
     def lockNote(self):
         self.editor.setReadOnly(not self.editor.isReadOnly())
 
-    def toggleAlwaysOnTop(self):
-        print('toggle')
-        NoteManager.cloneNote(self)
-        NoteManager.deleteNote(self)
-        self.destroy()
-
 class NoteMenu(QWidget):
 
     def __init__(self, parent):
@@ -94,9 +87,6 @@ class NoteMenu(QWidget):
         self.layout.addWidget(self.new)
         # add empty space
         self.layout.addStretch(1)
-        # add a always on top button
-        self.top = self.buttonFactory('resources/top.svg', None, self.alwaysOnTop)
-        self.layout.addWidget(self.top)
         # add a delete note button
         self.delete = self.buttonFactory('resources/delete.svg', None, self.deleteNote)
         self.layout.addWidget(self.delete)
@@ -114,9 +104,6 @@ class NoteMenu(QWidget):
 
     def deleteNote(self):
         self.parentWidget().deleteNote()
-
-    def alwaysOnTop(self):
-        self.parentWidget().toggleAlwaysOnTop()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -165,11 +152,25 @@ class NoteManager:
     def cloneNote(note):
         clone = Note()
         clone.setGeometry(note.geometry())
-        clone.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        clone.setWindowFlags(Note.flags)
         clone.editor.setPlainText(note.editor.toPlainText())
         clone.currentPosition = note.pos()
+        NoteManager.notes.remove(note)
+        note.destroy()
         clone.showNote()
         clone.activateWindow()
         NoteManager.notes.append(clone)
+
+    @staticmethod
+    def toggleAlwaysOnTop(alwaysOnTop):
+        if alwaysOnTop:
+            Note.flags = Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint
+            if len(NoteManager.notes) > 0:
+                NoteManager.cloneNote(NoteManager.notes[0])
+        else:
+            Note.flags = Qt.FramelessWindowHint | Qt.Tool
+            for note in NoteManager.notes:
+                note.setWindowFlags(Note.flags)
+                note.showNote()
 
 

@@ -37,14 +37,20 @@ class TrayMenu(QMenu):
 
     def __init__(self):
         super().__init__()
-        self.addItem('New Note', self.createNewNote)
-        self.addItem('Show All', self.showAllNotes)
-        self.addItem('Hide All', self.hideAllNotes)
-        self.addItem('Quit', self.quit)
+        self.addItem('New Note', False, self.createNewNote)
+        self.addSeparator()
+        self.addItem('Show All', False, self.showAllNotes)
+        self.addItem('Hide All', False, self.hideAllNotes)
+        self.addSeparator()
+        self.alwaysOnTop = self.addItem('Always On Top', True, self.toggleAlwaysOnTop)
+        self.addSeparator()
+        self.addItem('Quit', False, self.quit)
 
-    def addItem(self, label, handler):
+    def addItem(self, label, isCheckable, handler):
         action = self.addAction(label)
+        action.setCheckable(isCheckable)
         action.triggered.connect(handler)
+        return action
 
     def createNewNote(self):
         NoteManager.addNewNote()
@@ -59,4 +65,7 @@ class TrayMenu(QMenu):
 
     def quit(self):
         sys.exit(0)
+
+    def toggleAlwaysOnTop(self):
+        NoteManager.toggleAlwaysOnTop(self.alwaysOnTop.isChecked())
 
