@@ -19,8 +19,11 @@ class Note(QWidget):
         self.setMinimumHeight(self.MIN_HEIGHT)
         self.resize(self.INITIAL_WIDTH, self.INITIAL_HEIGHT)
         # make the note widgets skip taskbar
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Tool)
+        self.flags = Qt.FramelessWindowHint | Qt.Tool
+        self.setWindowFlags(self.flags)
+        # initialize needed properties
         self.currentPosition = None
+        self.isAlwaysOnTop = False
         # create a topmost vertical layout
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
@@ -67,6 +70,15 @@ class Note(QWidget):
         else:
             return False
 
+    def lockNote(self):
+        self.editor.setReadOnly(not self.editor.isReadOnly())
+
+    def toggleAlwaysOnTop(self):
+        print('toggle')
+        NoteManager.cloneNote(self)
+        NoteManager.deleteNote(self)
+        self.destroy()
+
 class NoteMenu(QWidget):
 
     def __init__(self, parent):
@@ -74,11 +86,17 @@ class NoteMenu(QWidget):
         # create a horizontal layout for the top menu
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(10, 5, 5, 2)
+        # add a lock note button
+        self.lock = self.buttonFactory('resources/lock.svg', None, self.lockNote)
+        self.layout.addWidget(self.lock)
         # add a new note button
         self.new = self.buttonFactory('resources/new.svg', None, self.createNewNote)
         self.layout.addWidget(self.new)
         # add empty space
         self.layout.addStretch(1)
+        # add a always on top button
+        self.top = self.buttonFactory('resources/top.svg', None, self.alwaysOnTop)
+        self.layout.addWidget(self.top)
         # add a delete note button
         self.delete = self.buttonFactory('resources/delete.svg', None, self.deleteNote)
         self.layout.addWidget(self.delete)
@@ -88,11 +106,17 @@ class NoteMenu(QWidget):
         button.clicked.connect(handler)
         return button
 
+    def lockNote(self):
+        self.parentWidget().lockNote()
+
     def createNewNote(self):
         NoteManager.addNewNote()
 
     def deleteNote(self):
         self.parentWidget().deleteNote()
+
+    def alwaysOnTop(self):
+        self.parentWidget().toggleAlwaysOnTop()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -137,5 +161,15 @@ class NoteManager:
         if note in NoteManager.notes:
             NoteManager.notes.remove(note)
 
+    @staticmethod
+    def cloneNote(note):
+        clone = Note()
+        clone.setGeometry(note.geometry())
+        clone.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        clone.editor.setPlainText(note.editor.toPlainText())
+        clone.currentPosition = note.pos()
+        clone.showNote()
+        clone.activateWindow()
+        NoteManager.notes.append(clone)
 
 
