@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPoint, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 
@@ -17,6 +17,7 @@ class Engine:
         Engine.app.setOrganizationDomain('curiousforcode.com');
         Engine.app.setApplicationName('chittha');
         Engine.app.aboutToQuit.connect(Engine.stop)
+        Engine.scheduleNoteSaver()
         Engine.createSystemTray()
         NoteManager.loadNotes()
         Engine.app.exec_()
@@ -40,6 +41,13 @@ class Engine:
     @staticmethod
     def stop():
         NoteManager.saveNotes()
+
+    @staticmethod
+    def scheduleNoteSaver():
+        print('Scheduled note saver')
+        timer = QTimer(Engine.app)
+        timer.timeout.connect(NoteManager.saveNotes)
+        timer.start(5000)
 
 class TrayMenu(QMenu):
 
