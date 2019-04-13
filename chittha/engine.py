@@ -13,8 +13,11 @@ class Engine:
     @staticmethod
     def start():
         Engine.app = QApplication([])
+        Engine.app.setOrganizationName('curiousforcode');
+        Engine.app.setOrganizationDomain('curiousforcode.com');
+        Engine.app.setApplicationName('chittha');
         Engine.createSystemTray()
-        NoteManager.addNewNote()
+        NoteManager.loadNotes()
         Engine.app.exec_()
 
     @staticmethod
@@ -66,6 +69,7 @@ class TrayMenu(QMenu):
                 note.showNote()
 
     def quit(self):
+        NoteManager.saveNotes()
         sys.exit(0)
 
     def toggleAlwaysOnTop(self):

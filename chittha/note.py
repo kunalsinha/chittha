@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import *
+from PyQt5.Qt import QStandardPaths
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, QPoint
-
 import logging
+import json
+from chittha import utils
 
 logger = logging.getLogger(__name__)
 
@@ -176,5 +178,43 @@ class NoteManager:
             for note in NoteManager.notes:
                 note.setWindowFlags(Note.flags)
                 note.showNote()
+
+    @staticmethod
+    def saveNotes():
+        logger.error('Saving notes')
+        settings = {}
+        settings['numNotes'] = len(NoteManager.notes)
+        settings['notes'] = []
+        for note in NoteManager.notes:
+            properties = {}
+            properties['geometryX'] = note.geometry().x()
+            properties['geometryY'] = note.geometry().y()
+            properties['geometryWidth'] = note.geometry().width()
+            properties['geometryHeight'] = note.geometry().height()
+            properties['text'] = note.editor.toPlainText()
+            properties['currentPositionX'] = note.pos().x()
+            properties['currentPositionY'] = note.pos().y()
+            settings['notes'].append(properties)
+        utils.saveSettings(json.dumps(settings))
+
+    @staticmethod
+    def loadNotes():
+        logger.error('Loading notes')
+        stext = utils.loadSettings()
+        if not stext:
+            stext = '{"numNotes": 0}'
+        settings = json.loads(stext)
+        if not settings or settings['numNotes'] == 0:
+            NoteManager.addNewNote()
+        else:
+            noteList = settings['notes']
+            for n in noteList:
+                note = Note()
+                note.setGeometry(n['geometryX'], n['geometryY'], n['geometryWidth'], n['geometryHeight'])
+                note.editor.setPlainText(n['text'])
+                note.showNote()
+                note.activateWindow()
+                NoteManager.notes.append(note)
+
 
 
