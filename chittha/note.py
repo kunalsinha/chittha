@@ -1,10 +1,10 @@
-from PyQt5.QtWidgets import *
 from PyQt5.Qt import QStandardPaths
-from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, QPoint
-import logging
-import json
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import *
 from chittha import utils
+import json
+import logging
 
 logger = logging.getLogger(__name__)
 

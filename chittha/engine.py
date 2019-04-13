@@ -1,9 +1,11 @@
 from PyQt5.QtCore import QPoint, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
-
 from chittha.note import Note, NoteManager
+import logging
 import signal
+
+logger = logging.getLogger(__name__)
 
 class Engine:
 
@@ -44,7 +46,7 @@ class Engine:
 
     @staticmethod
     def scheduleNoteSaver():
-        print('Scheduled note saver')
+        logger.error('Scheduled note saver')
         timer = QTimer(Engine.app)
         timer.timeout.connect(NoteManager.saveNotes)
         timer.start(5000)
