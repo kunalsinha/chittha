@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 
 from chittha.note import Note, NoteManager
-import sys
+import signal
 
 class Engine:
 
@@ -16,6 +16,7 @@ class Engine:
         Engine.app.setOrganizationName('curiousforcode');
         Engine.app.setOrganizationDomain('curiousforcode.com');
         Engine.app.setApplicationName('chittha');
+        Engine.app.aboutToQuit.connect(Engine.stop)
         Engine.createSystemTray()
         NoteManager.loadNotes()
         Engine.app.exec_()
@@ -35,6 +36,10 @@ class Engine:
             tray.showMessage('Chittha', message)
             # show the tray
             tray.show()
+
+    @staticmethod
+    def stop():
+        NoteManager.saveNotes()
 
 class TrayMenu(QMenu):
 
@@ -69,8 +74,7 @@ class TrayMenu(QMenu):
                 note.showNote()
 
     def quit(self):
-        NoteManager.saveNotes()
-        sys.exit(0)
+        Engine.app.quit()
 
     def toggleAlwaysOnTop(self):
         isAlwaysOnTop = self.alwaysOnTop.isChecked()
