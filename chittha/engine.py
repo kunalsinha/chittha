@@ -74,14 +74,10 @@ class TrayMenu(QMenu):
         NoteManager.addNewNote()
     
     def hideAllNotes(self):
-        if not NoteManager.ALWAYS_ON_TOP:
-            for note in NoteManager.notes:
-                note.hideNote()
+        NoteManager.hideAllNotes()
 
     def showAllNotes(self):
-        if not NoteManager.ALWAYS_ON_TOP:
-            for note in NoteManager.notes:
-                note.showNote()
+        NoteManager.showAllNotes()
 
     def quit(self):
         Engine.app.quit()

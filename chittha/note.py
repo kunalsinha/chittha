@@ -1,6 +1,6 @@
 from PyQt5.Qt import QStandardPaths
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtWidgets import *
 from chittha import utils
 import json
@@ -37,6 +37,8 @@ class Note(QWidget):
         self.layout.addWidget(self.statusBar)
         # add the layout to the note widget
         self.setLayout(self.layout)
+        # register shortcuts
+        self.registerShortcuts()
 
     def hideNote(self):
         if not self.isHidden:
@@ -73,6 +75,16 @@ class Note(QWidget):
 
     def lockNote(self):
         self.editor.setReadOnly(not self.editor.isReadOnly())
+
+    def registerShortcuts(self):
+        self.registerShortcut('Ctrl+N', NoteManager.addNewNote)
+        self.registerShortcut('Ctrl+Shift+H', NoteManager.hideAllNotes)
+        self.registerShortcut('Ctrl+Shift+S', NoteManager.showAllNotes)
+
+    def registerShortcut(self, sequence, handler):
+        shortcut = QShortcut(QKeySequence(sequence), self)
+        shortcut.activated.connect(handler)
+
 
 class NoteMenu(QWidget):
 
@@ -129,6 +141,7 @@ class NoteEditor(QTextEdit):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.setFocusPolicy(Qt.StrongFocus)
 
 class NoteStatus(QStatusBar):
 
@@ -145,6 +158,7 @@ class NoteManager:
         note = Note()
         note.showNote()
         note.activateWindow()
+        note.editor.setFocus()
         NoteManager.notes.append(note)
 
     @staticmethod
@@ -215,6 +229,19 @@ class NoteManager:
                 note.showNote()
                 note.activateWindow()
                 NoteManager.notes.append(note)
+
+    @staticmethod
+    def hideAllNotes():
+        if not NoteManager.ALWAYS_ON_TOP:
+            for note in NoteManager.notes:
+                note.hideNote()
+
+    @staticmethod
+    def showAllNotes():
+        if not NoteManager.ALWAYS_ON_TOP:
+            for note in NoteManager.notes:
+                note.showNote()
+
 
 
 
