@@ -45,13 +45,13 @@ class Note(QWidget):
             self.currentPosition = self.pos()
         self.hide()
         self.isHidden = True
-        logger.error('Hiding at: ' + str(self.currentPosition))
+        logger.debug('Hiding at: ' + str(self.currentPosition))
 
     def showNote(self):
         self.hide()
         if self.currentPosition:
             self.move(self.currentPosition)
-            logger.error('Moving to: ' + str(self.currentPosition))
+            logger.debug('Moving to: ' + str(self.currentPosition))
         self.show()
         self.activateWindow()
         self.isHidden = False
@@ -195,7 +195,7 @@ class NoteManager:
 
     @staticmethod
     def saveNotes():
-        logger.error('Saving notes')
+        logger.debug('Saving notes')
         settings = {}
         settings['numNotes'] = len(NoteManager.notes)
         settings['notes'] = []
@@ -213,7 +213,7 @@ class NoteManager:
 
     @staticmethod
     def loadNotes():
-        logger.error('Loading notes')
+        logger.debug('Loading notes')
         stext = utils.loadSettings()
         if not stext:
             stext = '{"numNotes": 0}'
