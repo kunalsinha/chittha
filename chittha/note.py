@@ -169,7 +169,6 @@ class NoteManager:
     def addNewNote():
         note = Note()
         note.showNote()
-        note.activateWindow()
         note.editor.setFocus()
         NoteManager.notes.add(note)
 
@@ -188,7 +187,6 @@ class NoteManager:
         NoteManager.notes.remove(note)
         note.destroy()
         clone.showNote()
-        clone.activateWindow()
         NoteManager.notes.add(clone)
 
     @staticmethod
@@ -239,7 +237,6 @@ class NoteManager:
                 note.setGeometry(n['geometryX'], n['geometryY'], n['geometryWidth'], n['geometryHeight'])
                 note.editor.setPlainText(n['text'])
                 note.showNote()
-                note.activateWindow()
                 NoteManager.notes.add(note)
 
     @staticmethod
@@ -257,6 +254,5 @@ class NoteManager:
     @staticmethod
     def focusNote(note):
         note.showNote()
-        note.activateWindow()
         note.editor.setFocus()
 
