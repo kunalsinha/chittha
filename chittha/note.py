@@ -34,14 +34,15 @@ class Note(QWidget):
         self.layout.addWidget(self.menu)
         self.editor = NoteEditor(self)
         self.layout.addWidget(self.editor)
-        self.statusBar = NoteStatus(self)
-        self.layout.addWidget(self.statusBar)
+        self.resizer = NoteResizer(self)
+        self.layout.addWidget(self.resizer)
         # add the layout to the note widget
         self.setLayout(self.layout)
         # register shortcuts
         self.registerShortcuts()
         # mark inactive by default
         self.isActive = False
+        #self.setStyleSheet('background-color: yellow')
 
     def hideNote(self):
         if not self.isHidden:
@@ -153,15 +154,29 @@ class NoteEditor(QTextEdit):
         super().__init__(parent)
         self.setFocusPolicy(Qt.StrongFocus)
         self.setCursorWidth(2)
+        self.setFrameStyle(QFrame.NoFrame)
 
     def focusInEvent(self, event):
         super().focusInEvent(event)
         NoteManager.markActive(self.parentWidget())
 
-class NoteStatus(QStatusBar):
+class NoteResizer(QWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.layout = QHBoxLayout(self)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.addStretch(1)
+        icon = QIcon('resources/resizer.svg')
+        resizeButton = self.ResizeButton(icon, None, self)
+        self.layout.addWidget(resizeButton)
+
+    class ResizeButton(QPushButton):
+        
+        def __init__(self, icon, text, parent):
+            super().__init__(icon, text, parent)
+            self.setFlat(True)
+            self.setStyleSheet('border: none;')
 
 class NoteManager:
 
