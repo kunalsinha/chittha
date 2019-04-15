@@ -79,13 +79,20 @@ class Note(QWidget):
 
     def registerShortcuts(self):
         self.registerShortcut('Ctrl+N', NoteManager.addNewNote)
-        self.registerShortcut('Ctrl+Shift+H', NoteManager.hideAllNotes)
-        self.registerShortcut('Ctrl+Shift+S', NoteManager.showAllNotes)
+        self.registerShortcut('Ctrl+H', NoteManager.hideAllNotes)
+        self.registerShortcut('Ctrl+S', NoteManager.showAllNotes)
+        self.registerShortcut('Ctrl+J', self.focusNextNote)
+        self.registerShortcut('Ctrl+K', self.focusPrevNote)
 
     def registerShortcut(self, sequence, handler):
         shortcut = QShortcut(QKeySequence(sequence), self)
         shortcut.activated.connect(handler)
 
+    def focusNextNote(self):
+        NoteManager.focusNote(self.next)
+
+    def focusPrevNote(self):
+        NoteManager.focusNote(self.prev)
 
 class NoteMenu(QWidget):
 
@@ -247,6 +254,9 @@ class NoteManager:
             for note in NoteManager.notes.all():
                 note.showNote()
 
-
-
+    @staticmethod
+    def focusNote(note):
+        note.showNote()
+        note.activateWindow()
+        note.editor.setFocus()
 
