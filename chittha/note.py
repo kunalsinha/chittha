@@ -1,6 +1,6 @@
 from PyQt5.Qt import QStandardPaths
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtGui import QIcon, QKeySequence
+from PyQt5.QtGui import QIcon, QKeySequence, QTextCursor
 from PyQt5.QtWidgets import *
 from chittha import utils
 import json
@@ -239,6 +239,7 @@ class NoteManager:
                 note = Note()
                 note.setGeometry(n['geometryX'], n['geometryY'], n['geometryWidth'], n['geometryHeight'])
                 note.editor.setPlainText(n['text'])
+                note.editor.moveCursor(QTextCursor.End)
                 NoteManager.notes.add(note)
                 if n['isActive'] == True:
                     activeNote = note
