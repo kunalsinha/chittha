@@ -40,6 +40,8 @@ class Note(QWidget):
         self.setLayout(self.layout)
         # register shortcuts
         self.registerShortcuts()
+        # mark inactive by default
+        self.isActive = False
 
     def hideNote(self):
         if not self.isHidden:
@@ -152,7 +154,7 @@ class NoteEditor(QTextEdit):
         self.setFocusPolicy(Qt.StrongFocus)
 
     def focusInEvent(self, event):
-        NoteManager.activeNote = self.parentWidget()
+        NoteManager.markActive(self.parentWidget())
 
 class NoteStatus(QStatusBar):
 
@@ -163,7 +165,6 @@ class NoteManager:
 
     notes = DLList()
     alwaysOnTop = False
-    activeNote = None
 
     @staticmethod
     def addNewNote():
@@ -218,6 +219,7 @@ class NoteManager:
             properties['text'] = note.editor.toPlainText()
             properties['currentPositionX'] = note.pos().x()
             properties['currentPositionY'] = note.pos().y()
+            properties['isActive'] = note.isActive
             settings['notes'].append(properties)
         utils.saveSettings(json.dumps(settings))
 
@@ -256,3 +258,8 @@ class NoteManager:
         note.showNote()
         note.editor.setFocus()
 
+    @staticmethod
+    def markActive(note):
+        for note in NoteManager.notes.all():
+            note.isActive = False
+        note.isActive = True
