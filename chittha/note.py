@@ -234,12 +234,19 @@ class NoteManager:
             NoteManager.addNewNote()
         else:
             noteList = settings['notes']
+            activeNote = None
             for n in noteList:
                 note = Note()
                 note.setGeometry(n['geometryX'], n['geometryY'], n['geometryWidth'], n['geometryHeight'])
                 note.editor.setPlainText(n['text'])
-                note.showNote()
                 NoteManager.notes.add(note)
+                if n['isActive'] == True:
+                    activeNote = note
+                    continue
+                note.showNote()
+            if activeNote:
+                activeNote.showNote()
+                activeNote.editor.setFocus()
 
     @staticmethod
     def hideAllNotes():
@@ -258,8 +265,9 @@ class NoteManager:
                 if note == activeNote:
                     continue
                 note.showNote()
-            activeNote.showNote()
-            activeNote.editor.setFocus()
+            if activeNote:
+                activeNote.showNote()
+                activeNote.editor.setFocus()
 
     @staticmethod
     def focusNote(note):
