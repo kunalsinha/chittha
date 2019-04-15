@@ -152,8 +152,10 @@ class NoteEditor(QTextEdit):
     def __init__(self, parent):
         super().__init__(parent)
         self.setFocusPolicy(Qt.StrongFocus)
+        self.setCursorWidth(2)
 
     def focusInEvent(self, event):
+        super().focusInEvent(event)
         NoteManager.markActive(self.parentWidget())
 
 class NoteStatus(QStatusBar):
