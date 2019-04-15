@@ -250,8 +250,16 @@ class NoteManager:
     @staticmethod
     def showAllNotes():
         if not NoteManager.alwaysOnTop:
+            activeNote = None
             for note in NoteManager.notes.all():
+                if note.isActive:
+                    activeNote = note
+            for note in NoteManager.notes.all():
+                if note == activeNote:
+                    continue
                 note.showNote()
+            activeNote.showNote()
+            activeNote.editor.setFocus()
 
     @staticmethod
     def focusNote(note):
@@ -260,6 +268,6 @@ class NoteManager:
 
     @staticmethod
     def markActive(note):
-        for note in NoteManager.notes.all():
-            note.isActive = False
+        for n in NoteManager.notes.all():
+            n.isActive = False
         note.isActive = True
