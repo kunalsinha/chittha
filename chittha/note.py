@@ -177,6 +177,7 @@ class NoteResizer(QWidget):
             super().__init__(icon, text, parent)
             self.setFlat(True)
             self.setStyleSheet('border: none;')
+            self.setCursor(Qt.SizeFDiagCursor)
 
 class NoteManager:
 
