@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 from chittha import utils
 import json
 import logging
+from chittha.dllist import DLList
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +144,9 @@ class NoteEditor(QTextEdit):
         super().__init__(parent)
         self.setFocusPolicy(Qt.StrongFocus)
 
+    def focusInEvent(self, event):
+        NoteManager.activeNote = self.parentWidget()
+
 class NoteStatus(QStatusBar):
 
     def __init__(self, parent):
@@ -150,8 +154,9 @@ class NoteStatus(QStatusBar):
 
 class NoteManager:
 
-    notes = []
-    ALWAYS_ON_TOP = False
+    notes = DLList()
+    alwaysOnTop = False
+    activeNote = None
 
     @staticmethod
     def addNewNote():
@@ -159,11 +164,11 @@ class NoteManager:
         note.showNote()
         note.activateWindow()
         note.editor.setFocus()
-        NoteManager.notes.append(note)
+        NoteManager.notes.add(note)
 
     @staticmethod
     def deleteNote(note):
-        if note in NoteManager.notes:
+        if note in NoteManager.notes.all():
             NoteManager.notes.remove(note)
 
     @staticmethod
@@ -177,19 +182,19 @@ class NoteManager:
         note.destroy()
         clone.showNote()
         clone.activateWindow()
-        NoteManager.notes.append(clone)
+        NoteManager.notes.add(clone)
 
     @staticmethod
     def toggleAlwaysOnTop(alwaysOnTop):
         if alwaysOnTop:
-            NoteManager.ALWAYS_ON_TOP = True
+            NoteManager.alwaysOnTop = True
             Note.flags = Qt.FramelessWindowHint | Qt.Tool | Qt.WindowStaysOnTopHint
-            if len(NoteManager.notes) > 0:
-                NoteManager.cloneNote(NoteManager.notes[0])
+            if NoteManager.notes.length() > 0:
+                NoteManager.cloneNote(NoteManager.notes.head)
         else:
-            NoteManager.ALWAYS_ON_TOP = False
+            NoteManager.alwaysOnTop = False
             Note.flags = Qt.FramelessWindowHint | Qt.Tool
-            for note in NoteManager.notes:
+            for note in NoteManager.notes.all():
                 note.setWindowFlags(Note.flags)
                 note.showNote()
 
@@ -197,9 +202,9 @@ class NoteManager:
     def saveNotes():
         logger.debug('Saving notes')
         settings = {}
-        settings['numNotes'] = len(NoteManager.notes)
+        settings['numNotes'] = NoteManager.notes.length()
         settings['notes'] = []
-        for note in NoteManager.notes:
+        for note in NoteManager.notes.all():
             properties = {}
             properties['geometryX'] = note.geometry().x()
             properties['geometryY'] = note.geometry().y()
@@ -228,18 +233,18 @@ class NoteManager:
                 note.editor.setPlainText(n['text'])
                 note.showNote()
                 note.activateWindow()
-                NoteManager.notes.append(note)
+                NoteManager.notes.add(note)
 
     @staticmethod
     def hideAllNotes():
-        if not NoteManager.ALWAYS_ON_TOP:
-            for note in NoteManager.notes:
+        if not NoteManager.alwaysOnTop:
+            for note in NoteManager.notes.all():
                 note.hideNote()
 
     @staticmethod
     def showAllNotes():
-        if not NoteManager.ALWAYS_ON_TOP:
-            for note in NoteManager.notes:
+        if not NoteManager.alwaysOnTop:
+            for note in NoteManager.notes.all():
                 note.showNote()
 
 
