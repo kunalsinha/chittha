@@ -170,42 +170,9 @@ class NoteResizer(QWidget):
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.addStretch(1)
-        icon = QIcon('resources/resizer.svg')
-        resizeButton = self.ResizeButton(icon, None, self, parent)
-        self.layout.addWidget(resizeButton)
-
-    class ResizeButton(QPushButton):
-        
-        def __init__(self, icon, text, parent, parentNote):
-            super().__init__(icon, text, parent)
-            self.parentNote = parentNote
-            self.setFlat(True)
-            self.setStyleSheet('border: none;')
-            self.setCursor(Qt.SizeFDiagCursor)
-
-        def mousePressEvent(self, event):
-            super().mousePressEvent(event)
-            if event.button() == Qt.LeftButton:
-                self.isLeftMouseButtonPressed = True
-                self.startPosition = self.mapToGlobal(event.pos())
-                logger.error(self.startPosition)
-
-        def mouseMoveEvent(self, event):
-            super().mouseMoveEvent(event)
-            if self.isLeftMouseButtonPressed:
-                self.endPosition = self.mapToGlobal(event.pos())
-                self.delta = self.endPosition - self.startPosition
-                logger.error('Movement ' + str(self.endPosition))
-                logger.error(self.delta)
-                newWidth = self.parentNote.width() + self.delta.x()
-                newHeight = self.parentNote.height() + self.delta.y()
-                self.parentNote.resize(newWidth, newHeight)
-                self.startPosition = self.endPosition
-
-        def mouseReleaseEvent(self, event):
-            super().mouseReleaseEvent(event)
-            if event.button == Qt.LeftButton and self.isLeftMouseButtonPressed:
-                self.isLeftMouseButtonPressed = False
+        grip = QSizeGrip(self)
+        grip.setStyleSheet('background-image: url("resources/resizer.svg");')
+        self.layout.addWidget(grip)
 
 class NoteManager:
 
