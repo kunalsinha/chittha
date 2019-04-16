@@ -135,6 +135,7 @@ class NoteMenu(QWidget):
         if event.button() == Qt.LeftButton:
             self.isLeftMouseButtonPressed = True
             self.startPosition = self.mapToGlobal(event.pos())
+            self.setCursor(Qt.ClosedHandCursor)
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
@@ -148,8 +149,9 @@ class NoteMenu(QWidget):
 
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)
-        if event.button == Qt.LeftButton and self.isLeftMouseButtonPressed:
+        if event.button() == Qt.LeftButton and self.isLeftMouseButtonPressed:
             self.isLeftMouseButtonPressed = False
+            self.setCursor(Qt.ArrowCursor)
 
 class NoteEditor(QTextEdit):
 
