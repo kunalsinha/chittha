@@ -188,18 +188,17 @@ class NoteResizer(QWidget):
             if event.button() == Qt.LeftButton:
                 self.isLeftMouseButtonPressed = True
                 self.startPosition = self.mapToGlobal(event.pos())
+                logger.error(self.startPosition)
 
         def mouseMoveEvent(self, event):
+            super().mouseMoveEvent(event)
             if self.isLeftMouseButtonPressed:
                 self.endPosition = self.mapToGlobal(event.pos())
                 self.delta = self.endPosition - self.startPosition
-#                self.deltaGlobal = self.mapToGlobal(self.delta)
-#                newWidth = self.parentNote.width() + self.deltaGlobal.x()
-#                newHeight = self.parentNote.height() + self.deltaGlobal.y()
-                newWidth = max(self.parentNote.minimumWidth(), 
-                        self.parentNote.width() + self.delta.x())
-                newHeight = max(self.parentNote.minimumHeight(), 
-                        self.parentNote.height() + self.delta.y())
+                logger.error('Movement ' + str(self.endPosition))
+                logger.error(self.delta)
+                newWidth = self.parentNote.width() + self.delta.x()
+                newHeight = self.parentNote.height() + self.delta.y()
                 self.parentNote.resize(newWidth, newHeight)
                 self.startPosition = self.endPosition
 
