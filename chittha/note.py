@@ -131,11 +131,13 @@ class NoteMenu(QWidget):
         self.parentWidget().deleteNote()
 
     def mousePressEvent(self, event):
+        super().mousePressEvent(event)
         if event.button() == Qt.LeftButton:
             self.isLeftMouseButtonPressed = True
             self.startPosition = self.mapToGlobal(event.pos())
 
     def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
         if self.isLeftMouseButtonPressed:
             self.endPosition = self.mapToGlobal(event.pos())
             self.delta = self.endPosition - self.startPosition
@@ -145,6 +147,7 @@ class NoteMenu(QWidget):
             self.parentWidget().currentPosition = self.newPosition
 
     def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
         if event.button == Qt.LeftButton and self.isLeftMouseButtonPressed:
             self.isLeftMouseButtonPressed = False
 
@@ -168,16 +171,42 @@ class NoteResizer(QWidget):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.addStretch(1)
         icon = QIcon('resources/resizer.svg')
-        resizeButton = self.ResizeButton(icon, None, self)
+        resizeButton = self.ResizeButton(icon, None, self, parent)
         self.layout.addWidget(resizeButton)
 
     class ResizeButton(QPushButton):
         
-        def __init__(self, icon, text, parent):
+        def __init__(self, icon, text, parent, parentNote):
             super().__init__(icon, text, parent)
+            self.parentNote = parentNote
             self.setFlat(True)
             self.setStyleSheet('border: none;')
             self.setCursor(Qt.SizeFDiagCursor)
+
+        def mousePressEvent(self, event):
+            super().mousePressEvent(event)
+            if event.button() == Qt.LeftButton:
+                self.isLeftMouseButtonPressed = True
+                self.startPosition = self.mapToGlobal(event.pos())
+
+        def mouseMoveEvent(self, event):
+            if self.isLeftMouseButtonPressed:
+                self.endPosition = self.mapToGlobal(event.pos())
+                self.delta = self.endPosition - self.startPosition
+#                self.deltaGlobal = self.mapToGlobal(self.delta)
+#                newWidth = self.parentNote.width() + self.deltaGlobal.x()
+#                newHeight = self.parentNote.height() + self.deltaGlobal.y()
+                newWidth = max(self.parentNote.minimumWidth(), 
+                        self.parentNote.width() + self.delta.x())
+                newHeight = max(self.parentNote.minimumHeight(), 
+                        self.parentNote.height() + self.delta.y())
+                self.parentNote.resize(newWidth, newHeight)
+                self.startPosition = self.endPosition
+
+        def mouseReleaseEvent(self, event):
+            super().mouseReleaseEvent(event)
+            if event.button == Qt.LeftButton and self.isLeftMouseButtonPressed:
+                self.isLeftMouseButtonPressed = False
 
 class NoteManager:
 
