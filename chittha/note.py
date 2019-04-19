@@ -193,7 +193,7 @@ class NoteResizer(QWidget):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.addStretch(1)
         grip = QSizeGrip(self)
-        grip.setStyleSheet('background-image: url("resources/resizer.svg");')
+        grip.setStyleSheet('background-image: url("resources/resizer.png");')
         self.layout.addWidget(grip)
 
 class NoteManager:
