@@ -124,7 +124,7 @@ class NoteMenu(QWidget):
         self.lock = self.buttonFactory('resources/unlock.png', None, self.lockNote)
         self.layout.addWidget(self.lock)
         # add a new note button
-        self.new = self.buttonFactory('resources/new.svg', None, self.createNewNote)
+        self.new = self.buttonFactory('resources/new.png', None, self.createNewNote)
         self.layout.addWidget(self.new)
         # add empty space
         self.layout.addStretch(1)
