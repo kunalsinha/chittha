@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 class Engine:
 
     app = None
-    TRAY_ICON = 'resources/tray-icon.svg'
+    TRAY_ICON = 'resources/tray-icon.png'
 
     @staticmethod
     def start():

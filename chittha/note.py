@@ -121,7 +121,7 @@ class NoteMenu(QWidget):
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(10, 5, 5, 2)
         # add a lock note button
-        self.lock = self.buttonFactory('resources/lock.svg', None, self.lockNote)
+        self.lock = self.buttonFactory('resources/unlock.png', None, self.lockNote)
         self.layout.addWidget(self.lock)
         # add a new note button
         self.new = self.buttonFactory('resources/new.svg', None, self.createNewNote)
@@ -139,6 +139,10 @@ class NoteMenu(QWidget):
 
     def lockNote(self):
         self.parentWidget().lockNote()
+        if self.parentWidget().editor.isReadOnly():
+            self.lock.setIcon(QIcon('resources/lock.png'))
+        else:
+            self.lock.setIcon(QIcon('resources/unlock.png'))
 
     def createNewNote(self):
         NoteManager.addNewNote()
