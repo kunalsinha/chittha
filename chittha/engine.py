@@ -18,7 +18,7 @@ from PyQt5.QtCore import QPoint, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 from chittha.note import NoteManager
-from chittha.settings import Settings
+from chittha.settings import Ui_Settings
 import logging
 import signal
 
@@ -38,7 +38,10 @@ class Engine:
         Engine.app.aboutToQuit.connect(Engine.stop)
         Engine.scheduleNoteSaver()
         Engine.createSystemTray()
-        Engine.settings = Settings()
+        Settings = QDialog()
+        ui = Ui_Settings()
+        ui.setupUi(Settings)
+        Settings.show()
         NoteManager.loadNotes()
         Engine.app.exec_()
 

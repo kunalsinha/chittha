@@ -28,18 +28,28 @@ class Ui_Settings(object):
         self.fontLabel = QtWidgets.QLabel(Settings)
         self.fontLabel.setGeometry(QtCore.QRect(30, 100, 31, 17))
         self.fontLabel.setObjectName("fontLabel")
+        # background color settings
         self.bgColorButton = QtWidgets.QPushButton(Settings)
         self.bgColorButton.setGeometry(QtCore.QRect(260, 40, 71, 21))
         self.bgColorButton.setText("")
         self.bgColorButton.setObjectName("bgColorButton")
+        self.bgColorPicker = QtWidgets.QColorDialog(Settings)
+        self.bgColorButton.clicked.connect(self.pickColor)
+        # text color settings
         self.textColorButton = QtWidgets.QPushButton(Settings)
         self.textColorButton.setGeometry(QtCore.QRect(260, 70, 71, 21))
         self.textColorButton.setText("")
         self.textColorButton.setObjectName("textColorButton")
+        self.textColorPicker = QtWidgets.QColorDialog(Settings)
+        self.textColorButton.clicked.connect(self.pickColor)
+        # font settings
         self.fontButton = QtWidgets.QPushButton(Settings)
         self.fontButton.setGeometry(QtCore.QRect(260, 100, 71, 21))
         self.fontButton.setText("")
         self.fontButton.setObjectName("fontButton")
+        self.fontPicker = QtWidgets.QFontDialog(Settings)
+        self.fontButton.clicked.connect(self.pickFont)
+        # startup settings
         self.startUpCheckBox = QtWidgets.QCheckBox(Settings)
         self.startUpCheckBox.setGeometry(QtCore.QRect(30, 150, 171, 23))
         self.startUpCheckBox.setObjectName("startUpCheckBox")
@@ -57,4 +67,11 @@ class Ui_Settings(object):
         self.fontLabel.setText(_translate("Settings", "Font"))
         self.startUpCheckBox.setText(_translate("Settings", "Run Chittha at startup"))
 
+    def pickColor(self):
+        col = self.bgColorPicker.getColor()
+        print(col.name())
+
+    def pickFont(self):
+        font, status = self.fontPicker.getFont()
+        print(font.family())
 
