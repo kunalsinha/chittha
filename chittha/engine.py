@@ -18,6 +18,7 @@ from PyQt5.QtCore import QPoint, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 from chittha.note import NoteManager
+from chittha.settings import Settings
 import logging
 import signal
 
@@ -37,6 +38,7 @@ class Engine:
         Engine.app.aboutToQuit.connect(Engine.stop)
         Engine.scheduleNoteSaver()
         Engine.createSystemTray()
+        Engine.settings = Settings()
         NoteManager.loadNotes()
         Engine.app.exec_()
 
@@ -75,9 +77,9 @@ class TrayMenu(QMenu):
         self.addSeparator()
         self.showAll = self.addItem('Show All', False, self.showAllNotes)
         self.hideAll = self.addItem('Hide All', False, self.hideAllNotes)
-        self.addSeparator()
         self.alwaysOnTop = self.addItem('Always On Top', True, self.toggleAlwaysOnTop)
         self.addSeparator()
+        self.settings = self.addItem('Settings', False, self.showSettings)
         self.addItem('Quit', False, self.quit)
 
     def addItem(self, label, isCheckable, handler):
@@ -94,6 +96,9 @@ class TrayMenu(QMenu):
 
     def showAllNotes(self):
         NoteManager.showAllNotes()
+
+    def showSettings(self):
+        Engine.settings.show()
 
     def quit(self):
         Engine.app.quit()
