@@ -65,6 +65,7 @@ def loadSettings():
     logger.debug('Changing cwd to runtime')
     return settings
 
+# returns rgba(r, g, b, a) from QColor
 def getRGBA(color):
     red = color.red()
     green = color.green()
