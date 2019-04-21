@@ -58,7 +58,8 @@ class Note(QWidget):
         self.registerShortcuts()
         # mark inactive by default
         self.isActive = False
-        #self.setStyleSheet('background-color: yellow')
+        # styling
+        self.setStyleSheet('background-color: ' + NoteManager.bgColor + '; color: ' + NoteManager.textColor + ';')
 
     def hideNote(self):
         if not self.isHidden:
@@ -205,6 +206,8 @@ class NoteManager:
 
     notes = DLList()
     alwaysOnTop = False
+    bgColor = 'yellow'
+    textColor = 'black'
 
     @staticmethod
     def addNewNote():
@@ -320,3 +323,24 @@ class NoteManager:
         for n in NoteManager.notes.all():
             n.isActive = False
         note.isActive = True
+
+    @staticmethod
+    def updateBgColor(color):
+        NoteManager.bgColor = color
+        for note in NoteManager.notes.all():
+            note.setStyleSheet('background-color: ' + color + ';')
+
+    @staticmethod
+    def updateTextColor(color):
+        NoteManager.textColor = color
+        for note in NoteManager.notes.all():
+            note.setStyleSheet('background-color: ' + NoteManager.bgColor + '; color: ' + color + ';')
+
+
+    @staticmethod
+    def updateFont(font):
+        NoteManager.font = font
+        print('updating font')
+        for note in NoteManager.notes.all():
+            note.editor.setFont(font)
+

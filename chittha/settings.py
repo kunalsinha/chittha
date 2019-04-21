@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont
+from chittha.note import NoteManager
 
 
 class Ui_Settings(object):
@@ -76,44 +77,48 @@ class Ui_Settings(object):
         col = self.bgColorPicker.getColor()
         colorCode = col.name()
         self.bgColorButton.setStyleSheet('background-color: ' + colorCode + ';')
+        NoteManager.updateBgColor(colorCode)
 
     def pickTextColor(self):
         col = self.textColorPicker.getColor()
         colorCode = col.name()
         self.textColorButton.setStyleSheet('background-color: ' + colorCode + ';')
+        NoteManager.updateTextColor(colorCode)
 
     def pickFont(self):
-        font, status = self.fontPicker.getFont()
-        name = None
-        weight = ''
-        style = ''
-        fontFamily = font.family()
-        fontWeight = font.weight()
-        fontStyle = font.style()
-        if fontWeight == QFont.Thin:
-            weight = 'Thin'
-        elif fontWeight == QFont.ExtraLight:
-            weight = 'ExtraLight'
-        elif fontWeight == QFont.Light:
-            weight = 'Light'
-        elif fontWeight == QFont.Normal:
+        font, ok = self.fontPicker.getFont()
+        if ok:
+            name = None
             weight = ''
-        elif fontWeight == QFont.Medium:
-            weight = 'Medium'
-        elif fontWeight == QFont.DemiBold:
-            weight = 'DemiBold'
-        elif fontWeight == QFont.Bold:
-            weight = 'Bold'
-        elif fontWeight == QFont.ExtraBold:
-            weight = 'ExtraBold'
-        elif fontWeight == QFont.Black:
-            weight = 'Black'
-        if fontStyle == QFont.StyleNormal:
             style = ''
-        elif fontStyle == QFont.StyleItalic:
-            style = 'Italic'
-        elif fontStyle == QFont.StyleOblique:
-            style = 'Oblique'
-        name = fontFamily + ' ' + weight + ' ' + style
-        self.fontButton.setText(name + ' | ' + str(font.pointSize()))
+            fontFamily = font.family()
+            fontWeight = font.weight()
+            fontStyle = font.style()
+            if fontWeight == QFont.Thin:
+                weight = 'Thin'
+            elif fontWeight == QFont.ExtraLight:
+                weight = 'ExtraLight'
+            elif fontWeight == QFont.Light:
+                weight = 'Light'
+            elif fontWeight == QFont.Normal:
+                weight = ''
+            elif fontWeight == QFont.Medium:
+                weight = 'Medium'
+            elif fontWeight == QFont.DemiBold:
+                weight = 'DemiBold'
+            elif fontWeight == QFont.Bold:
+                weight = 'Bold'
+            elif fontWeight == QFont.ExtraBold:
+                weight = 'ExtraBold'
+            elif fontWeight == QFont.Black:
+                weight = 'Black'
+            if fontStyle == QFont.StyleNormal:
+                style = ''
+            elif fontStyle == QFont.StyleItalic:
+                style = 'Italic'
+            elif fontStyle == QFont.StyleOblique:
+                style = 'Oblique'
+            name = fontFamily + ' ' + weight + ' ' + style
+            self.fontButton.setText(name + ' | ' + str(font.pointSize()))
+            NoteManager.updateFont(font)
 
