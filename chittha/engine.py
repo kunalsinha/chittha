@@ -36,13 +36,17 @@ class Engine:
         Engine.app.setOrganizationDomain('curiousforcode.com');
         Engine.app.setApplicationName('chittha');
         Engine.app.aboutToQuit.connect(Engine.stop)
+        # save notes every five seconds
         Engine.scheduleNoteSaver()
-        Engine.createSystemTray()
-        Settings = QDialog()
+        # settings window
+        Engine.Settings = QDialog()
         ui = Ui_Settings()
-        ui.setupUi(Settings)
-        Settings.show()
+        ui.setupUi(Engine.Settings)
+        # system tray
+        Engine.createSystemTray()
+        # load saved notes
         NoteManager.loadNotes()
+        Engine.app.setQuitOnLastWindowClosed(False)
         Engine.app.exec_()
 
     @staticmethod
@@ -101,7 +105,7 @@ class TrayMenu(QMenu):
         NoteManager.showAllNotes()
 
     def showSettings(self):
-        Engine.settings.show()
+        Engine.Settings.show()
 
     def quit(self):
         Engine.app.quit()
