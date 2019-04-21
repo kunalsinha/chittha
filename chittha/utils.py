@@ -64,3 +64,14 @@ def loadSettings():
     currentDir.setCurrent(currentDir.absolutePath())
     logger.debug('Changing cwd to runtime')
     return settings
+
+def getRGBA(color):
+    red = color.red()
+    green = color.green()
+    blue = color.blue()
+    alpha = color.alpha()
+    colorCode = 'rgba('
+    colorCode += str(red) + ', ' + str(green) + ', ' + str(blue) + ', ' + str(alpha)
+    colorCode += ')'
+    return colorCode
+

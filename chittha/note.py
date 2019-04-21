@@ -16,7 +16,7 @@
 
 from PyQt5.Qt import QStandardPaths
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtGui import QIcon, QKeySequence, QTextCursor
+from PyQt5.QtGui import QIcon, QKeySequence, QTextCursor, QColor
 from PyQt5.QtWidgets import *
 from chittha import utils
 import json
@@ -59,7 +59,7 @@ class Note(QWidget):
         # mark inactive by default
         self.isActive = False
         # styling
-        self.setStyleSheet('background-color: ' + NoteManager.bgColor + '; color: ' + NoteManager.textColor + ';')
+        self.setStyleSheet(NoteManager.getStyleSheet())
 
     def hideNote(self):
         if not self.isHidden:
@@ -206,8 +206,9 @@ class NoteManager:
 
     notes = DLList()
     alwaysOnTop = False
-    bgColor = 'yellow'
-    textColor = 'black'
+    bgColor = QColor(Qt.yellow)
+    textColor = QColor(Qt.black)
+    #font = #__check__ set some default
 
     @staticmethod
     def addNewNote():
@@ -325,22 +326,35 @@ class NoteManager:
         note.isActive = True
 
     @staticmethod
+    def getStyleSheet():
+        stylesheet = ''
+        bgColorCode = utils.getRGBA(NoteManager.bgColor)
+        stylesheet += 'background-color: ' + bgColorCode + '; '
+        textColorCode = utils.getRGBA(NoteManager.textColor)
+        stylesheet += 'color: ' + textColorCode + '; '
+        return stylesheet
+
+    @staticmethod
     def updateBgColor(color):
         NoteManager.bgColor = color
         for note in NoteManager.notes.all():
-            note.setStyleSheet('background-color: ' + color + ';')
+            note.setStyleSheet(NoteManager.getStyleSheet())
 
     @staticmethod
     def updateTextColor(color):
         NoteManager.textColor = color
         for note in NoteManager.notes.all():
-            note.setStyleSheet('background-color: ' + NoteManager.bgColor + '; color: ' + color + ';')
+            note.setStyleSheet(NoteManager.getStyleSheet())
 
+    @staticmethod
+    def updateOpacity(opacity):
+        NoteManager.opacity = opacity
+        for note in NoteManager.notes.all():
+            note.setStyleSheet(NoteManager.getStyleSheet())
 
     @staticmethod
     def updateFont(font):
         NoteManager.font = font
-        print('updating font')
         for note in NoteManager.notes.all():
             note.editor.setFont(font)
 

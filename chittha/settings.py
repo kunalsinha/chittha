@@ -20,7 +20,7 @@ class Ui_Settings(object):
         self.confirmationBox = QtWidgets.QDialogButtonBox(Settings)
         self.confirmationBox.setGeometry(QtCore.QRect(270, 200, 261, 32))
         self.confirmationBox.setOrientation(QtCore.Qt.Horizontal)
-        self.confirmationBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.confirmationBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok)
         self.confirmationBox.setObjectName("confirmationBox")
         # labels
         self.bgColorLabel = QtWidgets.QLabel(Settings)
@@ -37,7 +37,6 @@ class Ui_Settings(object):
         self.bgColorButton.setGeometry(QtCore.QRect(430, 40, 101, 21))
         self.bgColorButton.setText("")
         self.bgColorButton.setObjectName("bgColorButton")
-        self.bgColorPicker = QtWidgets.QColorDialog(Settings)
         self.bgColorButton.clicked.connect(self.pickBgColor)
         self.bgColorButton.setStyleSheet('background-color: yellow;')
         # text color settings
@@ -45,7 +44,6 @@ class Ui_Settings(object):
         self.textColorButton.setGeometry(QtCore.QRect(430, 70, 101, 21))
         self.textColorButton.setText("")
         self.textColorButton.setObjectName("textColorButton")
-        self.textColorPicker = QtWidgets.QColorDialog(Settings)
         self.textColorButton.clicked.connect(self.pickTextColor)
         self.textColorButton.setStyleSheet('background-color: black;')
         # font settings
@@ -74,16 +72,14 @@ class Ui_Settings(object):
         self.startUpCheckBox.setText(_translate("Settings", "Run Chittha at startup"))
 
     def pickBgColor(self):
-        col = self.bgColorPicker.getColor()
-        colorCode = col.name()
-        self.bgColorButton.setStyleSheet('background-color: ' + colorCode + ';')
-        NoteManager.updateBgColor(colorCode)
+        color = QtWidgets.QColorDialog.getColor()
+        self.bgColorButton.setStyleSheet('background-color: ' + color.name() + ';')
+        NoteManager.updateBgColor(color)
 
     def pickTextColor(self):
-        col = self.textColorPicker.getColor()
-        colorCode = col.name()
-        self.textColorButton.setStyleSheet('background-color: ' + colorCode + ';')
-        NoteManager.updateTextColor(colorCode)
+        color = QtWidgets.QColorDialog.getColor()
+        self.textColorButton.setStyleSheet('background-color: ' + color.name() + ';')
+        NoteManager.updateTextColor(color)
 
     def pickFont(self):
         font, ok = self.fontPicker.getFont()
@@ -121,4 +117,10 @@ class Ui_Settings(object):
             name = fontFamily + ' ' + weight + ' ' + style
             self.fontButton.setText(name + ' | ' + str(font.pointSize()))
             NoteManager.updateFont(font)
+
+    def save(self):
+        pass
+
+    def load(self):
+        pass
 
