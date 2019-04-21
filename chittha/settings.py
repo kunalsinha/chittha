@@ -14,11 +14,13 @@ class Ui_Settings(object):
         Settings.setObjectName("Settings")
         Settings.setFixedSize(351, 251)
         Settings.setSizeGripEnabled(False)
+        # confirmation buttons
         self.confirmationBox = QtWidgets.QDialogButtonBox(Settings)
         self.confirmationBox.setGeometry(QtCore.QRect(70, 200, 261, 32))
         self.confirmationBox.setOrientation(QtCore.Qt.Horizontal)
         self.confirmationBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.confirmationBox.setObjectName("confirmationBox")
+        # labels
         self.bgColorLabel = QtWidgets.QLabel(Settings)
         self.bgColorLabel.setGeometry(QtCore.QRect(30, 40, 121, 17))
         self.bgColorLabel.setObjectName("bgColorLabel")
@@ -34,14 +36,16 @@ class Ui_Settings(object):
         self.bgColorButton.setText("")
         self.bgColorButton.setObjectName("bgColorButton")
         self.bgColorPicker = QtWidgets.QColorDialog(Settings)
-        self.bgColorButton.clicked.connect(self.pickColor)
+        self.bgColorButton.clicked.connect(self.pickBgColor)
+        self.bgColorButton.setStyleSheet('background-color: yellow;')
         # text color settings
         self.textColorButton = QtWidgets.QPushButton(Settings)
         self.textColorButton.setGeometry(QtCore.QRect(260, 70, 71, 21))
         self.textColorButton.setText("")
         self.textColorButton.setObjectName("textColorButton")
         self.textColorPicker = QtWidgets.QColorDialog(Settings)
-        self.textColorButton.clicked.connect(self.pickColor)
+        self.textColorButton.clicked.connect(self.pickTextColor)
+        self.textColorButton.setStyleSheet('background-color: black;')
         # font settings
         self.fontButton = QtWidgets.QPushButton(Settings)
         self.fontButton.setGeometry(QtCore.QRect(260, 100, 71, 21))
@@ -69,7 +73,15 @@ class Ui_Settings(object):
 
     def pickColor(self):
         col = self.bgColorPicker.getColor()
-        print(col.name())
+        return col.name()
+
+    def pickBgColor(self):
+        colorCode = self.pickColor()
+        self.bgColorButton.setStyleSheet('background-color: ' + colorCode + ';')
+
+    def pickTextColor(self):
+        colorCode = self.pickColor()
+        self.textColorButton.setStyleSheet('background-color: ' + colorCode + ';')
 
     def pickFont(self):
         font, status = self.fontPicker.getFont()
