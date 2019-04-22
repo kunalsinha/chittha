@@ -87,8 +87,7 @@ class Ui_Settings(object):
             NoteManager.updateTextColor(color)
 
     def pickFont(self):
-        print(NoteManager.font.family())
-        font, ok = QtWidgets.QFontDialog.getFont()
+        font, ok = QtWidgets.QFontDialog.getFont(NoteManager.font)
         if ok:
             self.updateFontButtonLabel(font)
 
