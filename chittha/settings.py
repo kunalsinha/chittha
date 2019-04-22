@@ -9,6 +9,7 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont
 from chittha.note import NoteManager
+from chittha import utils
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
@@ -37,20 +38,23 @@ class Ui_Settings(object):
         self.bgColorButton.setText("")
         self.bgColorButton.setObjectName("bgColorButton")
         self.bgColorButton.clicked.connect(self.pickBgColor)
-        self.bgColorButton.setStyleSheet('background-color: yellow;')
+        bgColorCode = utils.getRGBA(NoteManager.bgColor)
+        self.bgColorButton.setStyleSheet('background-color: ' + bgColorCode + ';')
         # text color settings
         self.textColorButton = QtWidgets.QPushButton(Settings)
         self.textColorButton.setGeometry(QtCore.QRect(430, 70, 101, 21))
         self.textColorButton.setText("")
         self.textColorButton.setObjectName("textColorButton")
         self.textColorButton.clicked.connect(self.pickTextColor)
-        self.textColorButton.setStyleSheet('background-color: black;')
+        textColorCode = utils.getRGBA(NoteManager.textColor)
+        self.textColorButton.setStyleSheet('background-color: ' + textColorCode + ';')
         # font settings
         self.fontButton = QtWidgets.QPushButton(Settings)
         self.fontButton.setGeometry(QtCore.QRect(250, 100, 281, 21))
         self.fontButton.setText("Ubuntu")
         self.fontButton.setObjectName("fontButton")
-        self.fontPicker = QtWidgets.QFontDialog(Settings)
+        if NoteManager.font:
+            self.updateFontButtonLabel(NoteManager.font)
         self.fontButton.clicked.connect(self.pickFont)
         # startup settings
         self.startUpCheckBox = QtWidgets.QCheckBox(Settings)
@@ -71,49 +75,55 @@ class Ui_Settings(object):
         self.startUpCheckBox.setText(_translate("Settings", "Run Chittha at startup"))
 
     def pickBgColor(self):
-        color = QtWidgets.QColorDialog.getColor()
-        self.bgColorButton.setStyleSheet('background-color: ' + color.name() + ';')
-        NoteManager.updateBgColor(color)
+        color = QtWidgets.QColorDialog.getColor(initial=NoteManager.bgColor)
+        if color.isValid():
+            self.bgColorButton.setStyleSheet('background-color: ' + color.name() + ';')
+            NoteManager.updateBgColor(color)
 
     def pickTextColor(self):
-        color = QtWidgets.QColorDialog.getColor()
-        self.textColorButton.setStyleSheet('background-color: ' + color.name() + ';')
-        NoteManager.updateTextColor(color)
+        color = QtWidgets.QColorDialog.getColor(NoteManager.textColor)
+        if color.isValid():
+            self.textColorButton.setStyleSheet('background-color: ' + color.name() + ';')
+            NoteManager.updateTextColor(color)
 
     def pickFont(self):
-        font, ok = self.fontPicker.getFont()
+        print(NoteManager.font.family())
+        font, ok = QtWidgets.QFontDialog.getFont()
         if ok:
-            name = None
+            self.updateFontButtonLabel(font)
+
+    def updateFontButtonLabel(self, font):
+        name = None
+        weight = ''
+        style = ''
+        fontFamily = font.family()
+        fontWeight = font.weight()
+        fontStyle = font.style()
+        if fontWeight == QFont.Thin:
+            weight = 'Thin'
+        elif fontWeight == QFont.ExtraLight:
+            weight = 'ExtraLight'
+        elif fontWeight == QFont.Light:
+            weight = 'Light'
+        elif fontWeight == QFont.Normal:
             weight = ''
+        elif fontWeight == QFont.Medium:
+            weight = 'Medium'
+        elif fontWeight == QFont.DemiBold:
+            weight = 'DemiBold'
+        elif fontWeight == QFont.Bold:
+            weight = 'Bold'
+        elif fontWeight == QFont.ExtraBold:
+            weight = 'ExtraBold'
+        elif fontWeight == QFont.Black:
+            weight = 'Black'
+        if fontStyle == QFont.StyleNormal:
             style = ''
-            fontFamily = font.family()
-            fontWeight = font.weight()
-            fontStyle = font.style()
-            if fontWeight == QFont.Thin:
-                weight = 'Thin'
-            elif fontWeight == QFont.ExtraLight:
-                weight = 'ExtraLight'
-            elif fontWeight == QFont.Light:
-                weight = 'Light'
-            elif fontWeight == QFont.Normal:
-                weight = ''
-            elif fontWeight == QFont.Medium:
-                weight = 'Medium'
-            elif fontWeight == QFont.DemiBold:
-                weight = 'DemiBold'
-            elif fontWeight == QFont.Bold:
-                weight = 'Bold'
-            elif fontWeight == QFont.ExtraBold:
-                weight = 'ExtraBold'
-            elif fontWeight == QFont.Black:
-                weight = 'Black'
-            if fontStyle == QFont.StyleNormal:
-                style = ''
-            elif fontStyle == QFont.StyleItalic:
-                style = 'Italic'
-            elif fontStyle == QFont.StyleOblique:
-                style = 'Oblique'
-            name = fontFamily + ' ' + weight + ' ' + style
-            self.fontButton.setText(name + ' | ' + str(font.pointSize()))
-            NoteManager.updateFont(font)
+        elif fontStyle == QFont.StyleItalic:
+            style = 'Italic'
+        elif fontStyle == QFont.StyleOblique:
+            style = 'Oblique'
+        name = fontFamily + ' ' + weight + ' ' + style
+        self.fontButton.setText(name + ' | ' + str(font.pointSize()))
+        NoteManager.updateFont(font)
 
