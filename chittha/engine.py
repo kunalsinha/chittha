@@ -28,7 +28,7 @@ class Engine:
 
     app = None
     TRAY_ICON = 'resources/tray-icon.png'
-    settings = None
+    settingsDialog = None
 
     @staticmethod
     def start():
@@ -42,9 +42,9 @@ class Engine:
         # load application settings
         Engine.loadSettings()
         # settings window
-        Engine.settings = QDialog()
+        Engine.settingsDialog = QDialog()
         ui = Ui_Settings()
-        ui.setupUi(Engine.settings)
+        ui.setupUi(Engine.settingsDialog)
         # system tray
         Engine.createSystemTray()
         # load saved notes
@@ -121,7 +121,7 @@ class TrayMenu(QMenu):
         NoteManager.showAllNotes()
 
     def showSettings(self):
-        Engine.settings.show()
+        Engine.settingsDialog.show()
 
     def quit(self):
         Engine.app.quit()
