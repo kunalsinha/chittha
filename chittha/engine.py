@@ -28,6 +28,7 @@ class Engine:
 
     app = None
     TRAY_ICON = 'resources/tray-icon.png'
+    settings = None
 
     @staticmethod
     def start():
@@ -38,14 +39,16 @@ class Engine:
         Engine.app.aboutToQuit.connect(Engine.stop)
         # save notes every five seconds
         Engine.scheduleNoteSaver()
+        # load application settings
+        Engine.loadSettings()
         # settings window
-        Engine.Settings = QDialog()
+        Engine.settings = QDialog()
         ui = Ui_Settings()
-        ui.setupUi(Engine.Settings)
+        ui.setupUi(Engine.settings)
         # system tray
         Engine.createSystemTray()
         # load saved notes
-        NoteManager.loadNotes()
+        Engine.loadNotes() # load saved notes
         Engine.app.setQuitOnLastWindowClosed(False)
         Engine.app.exec_()
 
@@ -68,6 +71,7 @@ class Engine:
     @staticmethod
     def stop():
         NoteManager.saveNotes()
+        Engine.saveSettings()
 
     @staticmethod
     def scheduleNoteSaver():
@@ -75,6 +79,18 @@ class Engine:
         timer = QTimer(Engine.app)
         timer.timeout.connect(NoteManager.saveNotes)
         timer.start(5000)
+
+    @staticmethod
+    def loadNotes():
+        NoteManager.loadNotes()
+
+    @staticmethod
+    def saveSettings():
+        pass
+
+    @staticmethod
+    def loadSettings():
+        pass
 
 class TrayMenu(QMenu):
 
@@ -105,7 +121,7 @@ class TrayMenu(QMenu):
         NoteManager.showAllNotes()
 
     def showSettings(self):
-        Engine.Settings.show()
+        Engine.settings.show()
 
     def quit(self):
         Engine.app.quit()

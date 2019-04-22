@@ -10,7 +10,6 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QFont
 from chittha.note import NoteManager
 
-
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
@@ -117,10 +116,4 @@ class Ui_Settings(object):
             name = fontFamily + ' ' + weight + ' ' + style
             self.fontButton.setText(name + ' | ' + str(font.pointSize()))
             NoteManager.updateFont(font)
-
-    def save(self):
-        pass
-
-    def load(self):
-        pass
 
