@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from PyQt5.QtCore import QPoint, QTimer
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QPoint, QTimer, QSettings, Qt
+from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtWidgets import *
 from chittha.note import NoteManager
 from chittha.settings import Ui_Settings
@@ -29,6 +29,7 @@ class Engine:
     app = None
     TRAY_ICON = 'resources/tray-icon.png'
     settingsDialog = None
+    settings = None
 
     @staticmethod
     def start():
@@ -39,12 +40,14 @@ class Engine:
         Engine.app.aboutToQuit.connect(Engine.stop)
         # save notes every five seconds
         Engine.scheduleNoteSaver()
-        # load application settings
-        Engine.loadSettings()
-        # settings window
+        # settings dialog
         Engine.settingsDialog = QDialog()
         ui = Ui_Settings()
         ui.setupUi(Engine.settingsDialog)
+        # application settings
+        Engine.settings = QSettings()
+        # load application settings
+        Engine.loadSettings()
         # system tray
         Engine.createSystemTray()
         # load saved notes
@@ -86,11 +89,20 @@ class Engine:
 
     @staticmethod
     def saveSettings():
-        pass
+        logger.error('Saving settings')
+        Engine.settings.setValue('bgColor', NoteManager.bgColor)
+        Engine.settings.setValue('textColor', NoteManager.textColor)
+        if NoteManager.font:
+            Engine.settings.setValue('font', NoteManager.font)
+        Engine.settings.sync()
 
     @staticmethod
     def loadSettings():
-        pass
+        logger.error('Loading settings')
+        NoteManager.bgColor = Engine.settings.value('bgColor', QColor(Qt.yellow), QColor)
+        NoteManager.textColor = Engine.settings.value('textColor', QColor(Qt.black), QColor)
+        if Engine.settings.contains('font'):
+            NoteManager.font = Engine.settings.value('font')
 
 class TrayMenu(QMenu):
 

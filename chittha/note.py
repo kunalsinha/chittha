@@ -186,6 +186,8 @@ class NoteEditor(QTextEdit):
         self.setFocusPolicy(Qt.StrongFocus)
         self.setCursorWidth(2)
         self.setFrameStyle(QFrame.NoFrame)
+        if NoteManager.font:
+            self.setFont(NoteManager.font)
 
     def focusInEvent(self, event):
         super().focusInEvent(event)
@@ -206,9 +208,9 @@ class NoteManager:
 
     notes = DLList()
     alwaysOnTop = False
-    bgColor = QColor(Qt.yellow)
-    textColor = QColor(Qt.black)
-    #font = #__check__ set some default
+    bgColor = None
+    textColor = None
+    font = None
 
     @staticmethod
     def addNewNote():
