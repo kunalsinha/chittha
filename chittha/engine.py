@@ -40,14 +40,14 @@ class Engine:
         Engine.app.aboutToQuit.connect(Engine.stop)
         # save notes every five seconds
         Engine.scheduleNoteSaver()
-        # settings dialog
-        Engine.settingsDialog = QDialog()
-        ui = Ui_Settings()
-        ui.setupUi(Engine.settingsDialog)
         # application settings
         Engine.settings = QSettings()
         # load application settings
         Engine.loadSettings()
+        # initialize settings dialog
+        Engine.settingsDialog = QDialog()
+        ui = Ui_Settings()
+        ui.setupUi(Engine.settingsDialog)
         # system tray
         Engine.createSystemTray()
         # load saved notes
