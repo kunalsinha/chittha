@@ -14,11 +14,11 @@ from chittha import utils
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
-        Settings.setFixedSize(551, 251)
+        Settings.setFixedSize(551, 201)
         Settings.setSizeGripEnabled(False)
         # confirmation buttons
         self.confirmationBox = QtWidgets.QDialogButtonBox(Settings)
-        self.confirmationBox.setGeometry(QtCore.QRect(270, 200, 261, 32))
+        self.confirmationBox.setGeometry(QtCore.QRect(270, 160, 261, 32))
         self.confirmationBox.setOrientation(QtCore.Qt.Horizontal)
         self.confirmationBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok)
         self.confirmationBox.setObjectName("confirmationBox")
@@ -68,20 +68,20 @@ class Ui_Settings(object):
 
     def retranslateUi(self, Settings):
         _translate = QtCore.QCoreApplication.translate
-        Settings.setWindowTitle(_translate("Settings", "Settings"))
+        Settings.setWindowTitle(_translate("Chittha Settings", "Chittha Settings"))
         self.bgColorLabel.setText(_translate("Settings", "BackgroundColor"))
         self.textColorLabel.setText(_translate("Settings", "Text Color"))
         self.fontLabel.setText(_translate("Settings", "Font"))
         #self.startUpCheckBox.setText(_translate("Settings", "Run Chittha at startup"))
 
     def pickBgColor(self):
-        color = QtWidgets.QColorDialog.getColor(initial=NoteManager.bgColor)
+        color = QtWidgets.QColorDialog.getColor(initial=NoteManager.bgColor, title='Select Background Color')
         if color.isValid():
             self.bgColorButton.setStyleSheet('background-color: ' + color.name() + ';')
             NoteManager.updateBgColor(color)
 
     def pickTextColor(self):
-        color = QtWidgets.QColorDialog.getColor(NoteManager.textColor)
+        color = QtWidgets.QColorDialog.getColor(NoteManager.textColor, title='Select Text Color')
         if color.isValid():
             self.textColorButton.setStyleSheet('background-color: ' + color.name() + ';')
             NoteManager.updateTextColor(color)
