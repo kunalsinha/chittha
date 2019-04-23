@@ -343,6 +343,10 @@ class NoteManager:
         NoteManager.bgColor = color
         for note in NoteManager.notes.all():
             note.setStyleSheet(NoteManager.getStyleSheet())
+            if note.isActive:
+                note.menu.setStyleSheet('background-color: ' + utils.getDarkerRGBA(NoteManager.bgColor) + ';')
+            else:
+                note.menu.setStyleSheet('background-color: ' + utils.getRGBA(NoteManager.bgColor) + ';')
 
     @staticmethod
     def updateTextColor(color):
