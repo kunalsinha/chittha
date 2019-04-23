@@ -19,6 +19,7 @@ from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtWidgets import *
 from chittha.note import NoteManager
 from chittha.settings import Ui_Settings
+from chittha.about import Ui_TabWidget
 import logging
 import signal
 
@@ -29,6 +30,7 @@ class Engine:
     app = None
     TRAY_ICON = 'resources/tray-icon.png'
     settingsDialog = None
+    aboutDialog = None
     settings = None
 
     @staticmethod
@@ -48,6 +50,10 @@ class Engine:
         Engine.settingsDialog = QDialog()
         ui = Ui_Settings()
         ui.setupUi(Engine.settingsDialog)
+        # Initialize about dialog
+        Engine.aboutDialog = QTabWidget()
+        ui = Ui_TabWidget()
+        ui.setupUi(Engine.aboutDialog)
         # system tray
         Engine.createSystemTray()
         # load saved notes
@@ -115,6 +121,7 @@ class TrayMenu(QMenu):
         self.alwaysOnTop = self.addItem('Always On Top', True, self.toggleAlwaysOnTop)
         self.addSeparator()
         self.settings = self.addItem('Settings', False, self.showSettings)
+        self.about = self.addItem('About', False, self.showAbout)
         self.addItem('Quit', False, self.quit)
 
     def addItem(self, label, isCheckable, handler):
@@ -134,6 +141,9 @@ class TrayMenu(QMenu):
 
     def showSettings(self):
         Engine.settingsDialog.show()
+
+    def showAbout(self):
+        Engine.aboutDialog.show()
 
     def quit(self):
         Engine.app.quit()
