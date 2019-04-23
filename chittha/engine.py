@@ -14,10 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from PyQt5.QtCore import QPoint, QTimer
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QPoint, QTimer, QSettings, Qt
+from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtWidgets import *
 from chittha.note import NoteManager
+from chittha.settings import Ui_Settings
 import logging
 import signal
 
@@ -27,6 +28,8 @@ class Engine:
 
     app = None
     TRAY_ICON = 'resources/tray-icon.png'
+    settingsDialog = None
+    settings = None
 
     @staticmethod
     def start():
@@ -35,9 +38,21 @@ class Engine:
         Engine.app.setOrganizationDomain('curiousforcode.com');
         Engine.app.setApplicationName('chittha');
         Engine.app.aboutToQuit.connect(Engine.stop)
+        # save notes every five seconds
         Engine.scheduleNoteSaver()
+        # application settings
+        Engine.settings = QSettings()
+        # load application settings
+        Engine.loadSettings()
+        # initialize settings dialog
+        Engine.settingsDialog = QDialog()
+        ui = Ui_Settings()
+        ui.setupUi(Engine.settingsDialog)
+        # system tray
         Engine.createSystemTray()
-        NoteManager.loadNotes()
+        # load saved notes
+        Engine.loadNotes() # load saved notes
+        Engine.app.setQuitOnLastWindowClosed(False)
         Engine.app.exec_()
 
     @staticmethod
@@ -59,6 +74,7 @@ class Engine:
     @staticmethod
     def stop():
         NoteManager.saveNotes()
+        Engine.saveSettings()
 
     @staticmethod
     def scheduleNoteSaver():
@@ -66,6 +82,27 @@ class Engine:
         timer = QTimer(Engine.app)
         timer.timeout.connect(NoteManager.saveNotes)
         timer.start(5000)
+
+    @staticmethod
+    def loadNotes():
+        NoteManager.loadNotes()
+
+    @staticmethod
+    def saveSettings():
+        logger.error('Saving settings')
+        Engine.settings.setValue('bgColor', NoteManager.bgColor)
+        Engine.settings.setValue('textColor', NoteManager.textColor)
+        if NoteManager.font:
+            Engine.settings.setValue('font', NoteManager.font)
+        Engine.settings.sync()
+
+    @staticmethod
+    def loadSettings():
+        logger.error('Loading settings')
+        NoteManager.bgColor = Engine.settings.value('bgColor', QColor(Qt.yellow), QColor)
+        NoteManager.textColor = Engine.settings.value('textColor', QColor(Qt.black), QColor)
+        if Engine.settings.contains('font'):
+            NoteManager.font = Engine.settings.value('font')
 
 class TrayMenu(QMenu):
 
@@ -75,9 +112,9 @@ class TrayMenu(QMenu):
         self.addSeparator()
         self.showAll = self.addItem('Show All', False, self.showAllNotes)
         self.hideAll = self.addItem('Hide All', False, self.hideAllNotes)
-        self.addSeparator()
         self.alwaysOnTop = self.addItem('Always On Top', True, self.toggleAlwaysOnTop)
         self.addSeparator()
+        self.settings = self.addItem('Settings', False, self.showSettings)
         self.addItem('Quit', False, self.quit)
 
     def addItem(self, label, isCheckable, handler):
@@ -94,6 +131,9 @@ class TrayMenu(QMenu):
 
     def showAllNotes(self):
         NoteManager.showAllNotes()
+
+    def showSettings(self):
+        Engine.settingsDialog.show()
 
     def quit(self):
         Engine.app.quit()
