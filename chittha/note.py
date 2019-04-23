@@ -325,7 +325,9 @@ class NoteManager:
     def markActive(note):
         for n in NoteManager.notes.all():
             n.isActive = False
+            n.menu.setStyleSheet('background-color: ' + utils.getRGBA(NoteManager.bgColor) + ';')
         note.isActive = True
+        note.menu.setStyleSheet('background-color: ' + utils.getDarkerRGBA(NoteManager.bgColor) + ';')
 
     @staticmethod
     def getStyleSheet():
