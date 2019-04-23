@@ -87,9 +87,9 @@ def getDarkerRGBA(color):
     return colorCode
 
 def getLighterRGBA(color):
-    red = color.red()
-    green = color.green()
-    blue = color.blue()
+    red = 255- (255-color.red())/2
+    green = 255- (255-color.green())/2
+    blue = 255- (255-color.blue())/2
     alpha = color.alpha()
     colorCode = 'rgba('
     colorCode += str(red) + ', ' + str(green) + ', ' + str(blue) + ', ' + str(alpha)

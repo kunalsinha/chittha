@@ -327,7 +327,7 @@ class NoteManager:
             n.isActive = False
             n.menu.setStyleSheet('background-color: ' + utils.getRGBA(NoteManager.bgColor) + ';')
         note.isActive = True
-        note.menu.setStyleSheet('background-color: ' + utils.getDarkerRGBA(NoteManager.bgColor) + ';')
+        note.menu.setStyleSheet('background-color: ' + utils.getLighterRGBA(NoteManager.bgColor) + ';')
 
     @staticmethod
     def getStyleSheet():
@@ -344,7 +344,7 @@ class NoteManager:
         for note in NoteManager.notes.all():
             note.setStyleSheet(NoteManager.getStyleSheet())
             if note.isActive:
-                note.menu.setStyleSheet('background-color: ' + utils.getDarkerRGBA(NoteManager.bgColor) + ';')
+                note.menu.setStyleSheet('background-color: ' + utils.getLighterRGBA(NoteManager.bgColor) + ';')
             else:
                 note.menu.setStyleSheet('background-color: ' + utils.getRGBA(NoteManager.bgColor) + ';')
 
