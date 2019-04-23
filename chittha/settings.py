@@ -57,13 +57,13 @@ class Ui_Settings(object):
             self.updateFontButtonLabel(NoteManager.font)
         self.fontButton.clicked.connect(self.pickFont)
         # startup settings
-        self.startUpCheckBox = QtWidgets.QCheckBox(Settings)
-        self.startUpCheckBox.setGeometry(QtCore.QRect(30, 150, 171, 23))
-        self.startUpCheckBox.setObjectName("startUpCheckBox")
+        #self.startUpCheckBox = QtWidgets.QCheckBox(Settings)
+        #self.startUpCheckBox.setGeometry(QtCore.QRect(30, 150, 171, 23))
+        #self.startUpCheckBox.setObjectName("startUpCheckBox")
 
         self.retranslateUi(Settings)
         self.confirmationBox.accepted.connect(Settings.accept)
-        self.confirmationBox.rejected.connect(Settings.reject)
+        #self.confirmationBox.rejected.connect(Settings.reject)
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
@@ -72,7 +72,7 @@ class Ui_Settings(object):
         self.bgColorLabel.setText(_translate("Settings", "BackgroundColor"))
         self.textColorLabel.setText(_translate("Settings", "Text Color"))
         self.fontLabel.setText(_translate("Settings", "Font"))
-        self.startUpCheckBox.setText(_translate("Settings", "Run Chittha at startup"))
+        #self.startUpCheckBox.setText(_translate("Settings", "Run Chittha at startup"))
 
     def pickBgColor(self):
         color = QtWidgets.QColorDialog.getColor(initial=NoteManager.bgColor)
