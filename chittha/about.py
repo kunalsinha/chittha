@@ -20,12 +20,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
         TabWidget.setObjectName("TabWidget")
-        TabWidget.resize(540, 351)
+        TabWidget.setFixedSize(540, 421)
         self.about = QtWidgets.QWidget()
         self.about.setEnabled(True)
         self.about.setObjectName("about")
         self.label_2 = QtWidgets.QLabel(self.about)
-        self.label_2.setGeometry(QtCore.QRect(10, 0, 511, 321))
+        self.label_2.setGeometry(QtCore.QRect(10, 10, 511, 381))
         self.label_2.setObjectName("label_2")
         TabWidget.addTab(self.about, "")
         self.license = QtWidgets.QWidget()
