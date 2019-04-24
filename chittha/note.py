@@ -18,7 +18,7 @@ from PyQt5.Qt import QStandardPaths
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QIcon, QKeySequence, QTextCursor, QColor
 from PyQt5.QtWidgets import *
-from chittha import utils
+from chittha import utils, resources
 import json
 import logging
 from chittha.dllist import DLList
@@ -122,17 +122,17 @@ class NoteMenu(QWidget):
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(10, 5, 5, 2)
         # add a new note button
-        self.new = self.buttonFactory('resources/new.png', None, self.createNewNote)
+        self.new = self.buttonFactory(resources.getResourcePath('new.png'), None, self.createNewNote)
         self.new.setToolTip('Create new note')
         self.layout.addWidget(self.new)
         # add a lock note button
-        self.lock = self.buttonFactory('resources/unlock.png', None, self.lockNote)
+        self.lock = self.buttonFactory(resources.getResourcePath('unlock.png'), None, self.lockNote)
         self.lock.setToolTip('Unlocked')
         self.layout.addWidget(self.lock)
         # add empty space
         self.layout.addStretch(1)
         # add a delete note button
-        self.delete = self.buttonFactory('resources/delete.png', None, self.deleteNote)
+        self.delete = self.buttonFactory(resources.getResourcePath('delete.png'), None, self.deleteNote)
         self.delete.setToolTip('Delete note')
         self.layout.addWidget(self.delete)
 
@@ -144,10 +144,10 @@ class NoteMenu(QWidget):
     def lockNote(self):
         self.parentWidget().lockNote()
         if self.parentWidget().editor.isReadOnly():
-            self.lock.setIcon(QIcon('resources/lock.png'))
+            self.lock.setIcon(QIcon(resources.getResourcePath('lock.png')))
             self.lock.setToolTip('Locked')
         else:
-            self.lock.setIcon(QIcon('resources/unlock.png'))
+            self.lock.setIcon(resources.getResourcePath(QIcon('unlock.png')))
             self.lock.setToolTip('Unlocked')
 
     def createNewNote(self):
@@ -201,7 +201,8 @@ class NoteResizer(QWidget):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.addStretch(1)
         grip = QSizeGrip(self)
-        grip.setStyleSheet('background-image: url("resources/resizer.png");')
+        image = resources.getResourcePath('resizer.png')
+        grip.setStyleSheet('background-image: url({0});'.format(image))
         self.layout.addWidget(grip)
 
 class NoteManager:

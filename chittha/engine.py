@@ -20,6 +20,7 @@ from PyQt5.QtWidgets import *
 from chittha.note import NoteManager
 from chittha.settings import Ui_Settings
 from chittha.about import Ui_TabWidget
+from chittha import resources
 import logging
 import signal
 
@@ -28,7 +29,6 @@ logger = logging.getLogger(__name__)
 class Engine:
 
     app = None
-    TRAY_ICON = 'resources/tray-icon.png'
     settingsDialog = None
     aboutDialog = None
     settings = None
@@ -66,7 +66,7 @@ class Engine:
         if QSystemTrayIcon.isSystemTrayAvailable:
             tray = QSystemTrayIcon(Engine.app)
             # set the tray icon
-            trayIcon =  QIcon(Engine.TRAY_ICON)
+            trayIcon =  QIcon(resources.getResourcePath('tray-icon.png'))
             tray.setIcon(trayIcon)
             # set context menu
             trayMenu = TrayMenu()
