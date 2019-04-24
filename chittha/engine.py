@@ -48,12 +48,12 @@ class Engine:
         Engine.loadSettings()
         # initialize settings dialog
         Engine.settingsDialog = QDialog()
-        ui = Ui_Settings()
-        ui.setupUi(Engine.settingsDialog)
+        ui_settings = Ui_Settings()
+        ui_settings.setupUi(Engine.settingsDialog)
         # Initialize about dialog
         Engine.aboutDialog = QTabWidget()
-        ui = Ui_TabWidget()
-        ui.setupUi(Engine.aboutDialog)
+        ui_about = Ui_TabWidget()
+        ui_about.setupUi(Engine.aboutDialog)
         # system tray
         Engine.createSystemTray()
         # load saved notes
