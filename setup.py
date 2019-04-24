@@ -12,13 +12,20 @@ setup(
     description = 'Sticky notes application',
     long_description = readfile('README.md'),
     packages = ['chittha', 'resources'],
+    package_data = {
+        'resources': ['*.png'],
+    },
     install_requires = ['PyQt5==5.12.1'],
     python_requires = '>=3',
     data_files = [
         ('', ('README.md', 'LICENSE', 'requirements.txt')),
-        ('resources', glob.glob('resources/*.png'))
     ],
-    scripts = ['main.py',],
+    #scripts = ['main.py',],
+    entry_points = {
+        'gui_scripts': [
+            'chittha = chittha.engine:Engine.start',
+        ]
+    },
     license = 'GPL 3',
     keywords = 'sticky note notes reminder chittha',
     url = 'https://github.com/kunalsinha/chittha',
