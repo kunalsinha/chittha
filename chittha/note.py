@@ -103,6 +103,7 @@ class Note(QWidget):
         self.registerShortcut('Ctrl+S', NoteManager.showAllNotes)
         self.registerShortcut('Ctrl+J', self.focusNextNote)
         self.registerShortcut('Ctrl+K', self.focusPrevNote)
+        self.registerShortcut('Ctrl+L', self.menu.lockNote)
 
     def registerShortcut(self, sequence, handler):
         shortcut = QShortcut(QKeySequence(sequence), self)
@@ -147,7 +148,7 @@ class NoteMenu(QWidget):
             self.lock.setIcon(QIcon(resources.getResourcePath('lock.png')))
             self.lock.setToolTip('Locked')
         else:
-            self.lock.setIcon(resources.getResourcePath(QIcon('unlock.png')))
+            self.lock.setIcon(QIcon(resources.getResourcePath('unlock.png')))
             self.lock.setToolTip('Unlocked')
 
     def createNewNote(self):
