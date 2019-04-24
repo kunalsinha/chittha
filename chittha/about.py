@@ -15,12 +15,14 @@
 # along with Chittha.  If not, see <https://www.gnu.org/licenses/>.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from chittha import resources
 
 
 class Ui_TabWidget(object):
     def setupUi(self, TabWidget):
         TabWidget.setObjectName("TabWidget")
         TabWidget.setFixedSize(540, 421)
+        TabWidget.setWindowIcon(QtGui.QIcon(resources.getResourcePath('tray-icon.png')))
         self.about = QtWidgets.QWidget()
         self.about.setEnabled(True)
         self.about.setObjectName("about")

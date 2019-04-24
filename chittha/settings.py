@@ -15,15 +15,16 @@
 # along with Chittha.  If not, see <https://www.gnu.org/licenses/>.
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 from chittha.note import NoteManager
-from chittha import utils
+from chittha import utils, resources
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
         Settings.setFixedSize(551, 201)
         Settings.setSizeGripEnabled(False)
+        Settings.setWindowIcon(QIcon(resources.getResourcePath('tray-icon.png')))
         # confirmation buttons
         self.confirmationBox = QtWidgets.QDialogButtonBox(Settings)
         self.confirmationBox.setGeometry(QtCore.QRect(270, 160, 261, 32))
