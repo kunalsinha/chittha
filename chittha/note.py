@@ -104,6 +104,7 @@ class Note(QWidget):
         self.registerShortcut('Ctrl+J', self.focusNextNote)
         self.registerShortcut('Ctrl+K', self.focusPrevNote)
         self.registerShortcut('Ctrl+L', self.menu.lockNote)
+        self.registerShortcut('Ctrl+P', NoteManager.toggleAlwaysOnTop2)
 
     def registerShortcut(self, sequence, handler):
         shortcut = QShortcut(QKeySequence(sequence), self)
@@ -251,6 +252,10 @@ class NoteManager:
             for note in NoteManager.notes.all():
                 note.setWindowFlags(Note.flags)
                 note.showNote()
+
+    @staticmethod
+    def toggleAlwaysOnTop2():
+        NoteManager.toggleAlwaysOnTop(not NoteManager.alwaysOnTop)
 
     @staticmethod
     def saveNotes():
