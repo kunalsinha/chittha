@@ -1,9 +1,5 @@
 <h3 align="center">Chittha</h3>
 
-<p align="center">
-	Fast and easy sticky notes app
-</p>
-
 # Installation
 Clone the repository
 ```shell
