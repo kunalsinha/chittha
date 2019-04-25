@@ -1,3 +1,5 @@
+Chittha is a note taking application written in python with PyQt5.
+
 # Installation
 Clone the repository
 ```shell
