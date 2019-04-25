@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import *
 from chittha.note import NoteManager
 from chittha.settings import Ui_Settings
 from chittha.about import Ui_TabWidget
-from chittha import resources
+from chittha import resources, singleton
 import logging
 import signal
 
@@ -35,6 +35,7 @@ class Engine:
 
     @staticmethod
     def start():
+        me = singleton.SingleInstance()
         Engine.app = QApplication([])
         Engine.app.setOrganizationName('curiousforcode');
         Engine.app.setOrganizationDomain('curiousforcode.com');
