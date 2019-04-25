@@ -28,11 +28,11 @@ chittha
 
 # Shortcuts
 
-Ctrl + N -> Add new note  
-Ctrl + L -> Lock/Unlock current note  
-Ctrl + J -> Go to next note  
-Ctrl + K -> Go to previous note  
-Ctrl + H -> Hide all notes  
+**Ctrl + N** -> Add new note  
+**Ctrl + L** -> Lock/Unlock current note  
+**Ctrl + J** -> Go to next note  
+**Ctrl + K** -> Go to previous note  
+**Ctrl + H** -> Hide all notes  
 
 # Copyright and license
 
