@@ -1,5 +1,3 @@
-<h3 align="center">Chittha</h3>
-
 # Installation
 Clone the repository
 ```shell
