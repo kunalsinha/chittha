@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Chittha
+Comment=A sticky notes application
+Exec=chittha
+Icon=chittha.svg

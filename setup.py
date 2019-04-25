@@ -18,7 +18,8 @@ setup(
     install_requires = ['PyQt5==5.12.1'],
     python_requires = '>=3',
     data_files = [
-        ('', ('README.md', 'LICENSE', 'requirements.txt')),
+        ('/usr/share/applications', ('app/chittha.desktop', )),
+        ('/usr/share/pixmaps', ('app/chittha.svg', )),
     ],
     #scripts = ['main.py',],
     entry_points = {
