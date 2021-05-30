@@ -36,4 +36,4 @@ chittha
 
 # Copyright and license
 
-Copyright 2019 Kunal Sinha. Code released under the [GPL 3](https://www.gnu.org/copyleft/gpl.html) license.
+Copyright 2021 Kunal Sinha. Code released under the [GPL 3](https://www.gnu.org/copyleft/gpl.html) license.
