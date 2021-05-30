@@ -1,5 +1,5 @@
 # Chittha - a sticky notes application
-# Copyright (C) 2019 Kunal Sinha <kunalsinha4u@gmail.com>
+# Copyright (C) 2021 Kunal Sinha <kunalsinha4u@gmail.com>
 #
 # Chittha is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ class Ui_TabWidget(object):
     def retranslateUi(self, TabWidget):
         _translate = QtCore.QCoreApplication.translate
         TabWidget.setWindowTitle(_translate("TabWidget", "Chittha"))
-        self.label_2.setText(_translate("TabWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; font-weight:600;\">Chittha v1.0</span></p><p align=\"center\"><span style=\" font-weight:600;\">Keyboard Shortcuts</span></p><p align=\"center\">Ctrl + N -&gt; New note</p><p align=\"center\">Ctrl + L -&gt; Lock/Unlock note</p><p align=\"center\">Ctrl + J -&gt; Next note</p><p align=\"center\">Ctrl + K -&gt; Previous note</p><p align=\"center\">Ctrl + H -&gt; Hide all notes</p><p align=\"center\"><br/></p><p align=\"center\"><a href=\"https://github.com/kunalsinha/chittha\"><span style=\" text-decoration: underline; color:#0000ff;\">https://github.com/kunalsinha/chittha</span></a></p><p align=\"center\">Copyright (C) 2019 Kunal Sinha</p></body></html>"))
+        self.label_2.setText(_translate("TabWidget", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; font-weight:600;\">Chittha v1.0</span></p><p align=\"center\"><span style=\" font-weight:600;\">Keyboard Shortcuts</span></p><p align=\"center\">Ctrl + N -&gt; New note</p><p align=\"center\">Ctrl + L -&gt; Lock/Unlock note</p><p align=\"center\">Ctrl + J -&gt; Next note</p><p align=\"center\">Ctrl + K -&gt; Previous note</p><p align=\"center\">Ctrl + H -&gt; Hide all notes</p><p align=\"center\"><br/></p><p align=\"center\"><a href=\"https://github.com/kunalsinha/chittha\"><span style=\" text-decoration: underline; color:#0000ff;\">https://github.com/kunalsinha/chittha</span></a></p><p align=\"center\">Copyright (C) 2021 Kunal Sinha</p></body></html>"))
         TabWidget.setTabText(TabWidget.indexOf(self.about), _translate("TabWidget", "About"))
         self.label.setText(_translate("TabWidget", "Chittha is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"

@@ -1,5 +1,5 @@
 # Chittha - a sticky notes application
-# Copyright (C) 2019 Kunal Sinha <kunalsinha4u@gmail.com>
+# Copyright (C) 2021 Kunal Sinha <kunalsinha4u@gmail.com>
 #
 # Chittha is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
